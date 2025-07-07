@@ -1,0 +1,29 @@
+.form-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; }
+.form { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 16px; background-color: var(--semantic-color-background-primary); border-radius: var(--border-radius-m); box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 100%; max-width: 600px; max-height: 95vh; overflow-y: auto; }
+.headline { display: flex; align-items: center; justify-content: space-between; align-self: stretch; width: 100%; }
+.headline .frame { flex: 1; }
+.headline .text-wrapper { font-family: var(--heading-m-semibold-font-family); font-weight: var(--heading-m-semibold-font-weight); color: var(--semantic-color-content-secondary); font-size: var(--heading-m-semibold-font-size); letter-spacing: var(--heading-m-semibold-letter-spacing); line-height: var(--heading-m-semibold-line-height); font-style: var(--heading-m-semibold-font-style); white-space: normal; }
+.close-button { background: none; border: none; cursor: pointer; padding: 4px; }
+.close-button .img { width: 24px; height: 24px; }
+.input-field { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; align-self: stretch; width: 100%; }
+.input { display: flex; flex-direction: column; align-items: flex-start; align-self: stretch; width: 100%; }
+.form-label { /* RENAMED FROM .input .div, .input .email */
+  font-family: var(--text-m-regular-font-family);
+  font-weight: var(--text-m-regular-font-weight);
+  color: var(--semantic-color-content-tertiary);
+  font-size: var(--text-m-regular-font-size);
+  letter-spacing: var(--text-m-regular-letter-spacing);
+  line-height: var(--text-m-regular-line-height);
+  font-style: var(--text-m-regular-font-style);
+}
+.field, .field-2 { margin-top: 6px; display: flex; align-items: center; padding: 10px 16px; align-self: stretch; width: 100%; gap: 8px; border: 1px solid var(--semantic-color-border-primary); border-radius: var(--border-radius-m); position: relative; background-color: var(--semantic-color-background-primary); }
+.field .content, .field-2 .content, .field .content-2 { flex: 1; font-family: var(--text-l-regular-font-family); font-weight: var(--text-l-regular-font-weight); font-size: var(--text-l-regular-font-size); color: var(--semantic-color-content-secondary); line-height: var(--text-l-regular-line-height); background-color: transparent; border: none; width: 100%; }
+.field .content::placeholder, .field-2 .content::placeholder, .field .content-2::placeholder { color: var(--semantic-color-content-tertiary); opacity: 1; }
+.field .img { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; pointer-events: none; }
+select.content { -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; }
+select.content:invalid { color: var(--semantic-color-content-tertiary); }
+.field-2 { min-height: 120px; align-items: flex-start; }
+textarea.content { resize: vertical; min-height: 90px; }
+.button { display: flex; width: 100%; padding: 10px 0px; align-items: center; justify-content: center; gap: 8px; background-color: var(--semantic-color-background-brand); border-radius: var(--border-radius-m); border: none; cursor: pointer; transition: filter 0.2s ease; margin-top: 8px; }
+.button:hover { filter: brightness(1.1); }
+.button .label { font-family: var(--text-l-semibold-font-family); font-weight: var(--text-l-semibold-font-weight); color: var(--semantic-color-content-primary-inverse); font-size: var(--text-l-semibold-font-size); letter-spacing: var(--text-l-semibold-letter-spacing); line-height: var(--text-l-semibold-line-height); font-style: var(--text-l-semibold-font-style); }

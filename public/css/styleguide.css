@@ -1,0 +1,45 @@
+:root {
+  --heading-m-semibold-font-family: "Roboto", Helvetica;
+  --heading-m-semibold-font-weight: 600;
+  --heading-m-semibold-font-size: 24px;
+  --heading-m-semibold-letter-spacing: -0.5px;
+  --heading-m-semibold-line-height: 32px;
+  --heading-m-semibold-font-style: normal;
+  --text-l-regular-font-family: "Roboto", Helvetica;
+  --text-l-regular-font-weight: 400;
+  --text-l-regular-font-size: 16px;
+  --text-l-regular-letter-spacing: 0px;
+  --text-l-regular-line-height: 24px;
+  --text-l-regular-font-style: normal;
+  --text-l-semibold-font-family: "Roboto", Helvetica;
+  --text-l-semibold-font-weight: 600;
+  --text-l-semibold-font-size: 16px;
+  --text-l-semibold-letter-spacing: 0px;
+  --text-l-semibold-line-height: 24px;
+  --text-l-semibold-font-style: normal;
+  --text-m-regular-font-family: "Roboto", Helvetica;
+  --text-m-regular-font-weight: 400;
+  --text-m-regular-font-size: 14px;
+  --text-m-regular-letter-spacing: 0px;
+  --text-m-regular-line-height: 20px;
+  --text-m-regular-font-style: normal;
+  --spacing-space-XL: 24px;
+  --spacing-space-2xs: 2px;
+  --spacing-space-s: 8px;
+  --spacing-space-l: 16px;
+  --spacing-space-m: 12px;
+  --spacing-space-XS: 4px;
+  --semantic-color-content-secondary: var(--primitives-colors-neutral-800);
+  --semantic-color-content-tertiary: var(--primitives-colors-neutral-600);
+  --semantic-color-content-primary-inverse: var(
+    --primitives-colors-primary-white
+  );
+  --semantic-color-background-primary: var(--primitives-colors-primary-white);
+  --semantic-color-border-primary: var(--primitives-colors-neutral-600);
+  --semantic-color-background-brand: var(--primitives-colors-brandprimary-500);
+  --primitives-colors-neutral-800: rgba(51, 51, 51, 1);
+  --primitives-colors-neutral-600: rgba(102, 102, 102, 1);
+  --primitives-colors-primary-white: rgba(255, 255, 255, 1);
+  --primitives-colors-brandprimary-500: rgba(178, 0, 0, 1);
+  --border-radius-m: 12px;
+}
