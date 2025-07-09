@@ -53,7 +53,7 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kritik</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Saran</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th> -->
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -63,7 +63,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $feedback->kritik }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $feedback->saran }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $feedback->created_at->format('d M Y, H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <!-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <form action="{{ route('feedbacks.destroy', $feedback->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('DELETE')
@@ -74,7 +74,7 @@
                                                     <span>Hapus</span>
                                                 </button>
                                             </form>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 @empty
                                     <tr>

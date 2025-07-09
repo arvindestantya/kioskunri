@@ -3,6 +3,7 @@
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\GuestController; // <-- TAMBAHKAN BARIS INI
 
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/faculties/{faculty}/guests', [GuestController::class, 'store']);
 Route::post('/faculties/{faculty}/feedbacks', [FeedbackController::class, 'store']);
+Route::post('/faculties/{faculty}/surveys', [SurveyController::class, 'store']);
 // Route::get('/faculties/{faculty}/flyers', function (Faculty $faculty) {
 //     return response()->json([
 //         'flyers' => $faculty->flyers()->latest()->get()->pluck('path')

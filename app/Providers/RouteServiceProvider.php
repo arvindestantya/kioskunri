@@ -23,7 +23,7 @@ class RouteServiceProvider extends ServiceProvider
         return route('superadmin.faculties.index');
     }
 
-    return '/dashboard';
+    return '/admin/dashboard';
 }
 
     /**

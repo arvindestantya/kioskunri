@@ -2,12 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\Feedback;
+use App\Models\Survey;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class FeedbacksExport implements FromQuery, WithHeadings, WithMapping
+class SurveysExport implements FromQuery, WithHeadings, WithMapping
 {
     protected $search;
     protected $facultyId; // <-- Properti baru
@@ -28,7 +28,7 @@ class FeedbacksExport implements FromQuery, WithHeadings, WithMapping
      */
     public function query()
     {
-        $query = Feedback::query();
+        $query = Survey::query();
 
         // Jika user BUKAN Super Admin, filter berdasarkan fakultasnya.
         if (!$this->isSuperAdmin) {
@@ -39,8 +39,8 @@ class FeedbacksExport implements FromQuery, WithHeadings, WithMapping
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('nama', 'like', '%' . $this->search . '%')
-                  ->orWhere('kritik', 'like', '%' . $this->search . '%')
-                  ->orWhere('saran', 'like', '%' . $this->search . '%');
+                  ->orWhere('rating', 'like', '%' . $this->search . '%')
+                  ->orWhere('pesan', 'like', '%' . $this->search . '%');
             });
         }
         
@@ -60,9 +60,8 @@ class FeedbacksExport implements FromQuery, WithHeadings, WithMapping
         $headings = [
             'ID',
             'Nama',
-            'Kritik',
-            'Saran',
-            'Tanggal Input',
+            'Rating',
+            'Pesan',
         ];
 
         // Jika Super Admin, tambahkan kolom Fakultas di awal.
@@ -76,19 +75,19 @@ class FeedbacksExport implements FromQuery, WithHeadings, WithMapping
     /**
      * Memetakan setiap baris data. Format akan berbeda untuk Super Admin.
      */
-    public function map($feedback): array
+    public function map($survey): array
     {
         $data = [
-            $feedback->id,
-            $feedback->nama,
-            $feedback->kritik,
-            $feedback->saran,
-            $feedback->created_at->format('Y-m-d H:i:s'),
+            $survey->id,
+            $survey->nama,
+            $survey->rating,
+            $survey->pesan,
+            $survey->created_at->format('Y-m-d H:i:s'),
         ];
 
         // Jika Super Admin, tambahkan nama fakultas ke data.
         if ($this->isSuperAdmin) {
-            array_splice($data, 1, 0, $feedback->faculty->name ?? 'N/A');
+            array_splice($data, 1, 0, $survey->faculty->name ?? 'N/A');
         }
 
         return $data;

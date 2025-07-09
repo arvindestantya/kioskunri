@@ -5,9 +5,16 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
+                    @hasrole('Faculty Admin')
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
+                    @endhasrole
+                    @hasrole('Super Admin')
+                    <a href="{{ route('superadmin.faculties.index') }}">
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    </a>
+                    @endhasrole
                 </div>
 
                 <!-- Navigation Links (Desktop) -->
@@ -15,7 +22,7 @@
                     
                     {{-- Menu ini hanya akan muncul untuk Admin Fakultas --}}
                     @hasrole('Faculty Admin')
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('guests')" :active="request()->routeIs('guests')">
                             {{ __('Buku Tamu') }}
                         </x-nav-link>
                         <x-nav-link :href="route('flyers.index')" :active="request()->routeIs('flyers.index')">
@@ -23,6 +30,9 @@
                         </x-nav-link>
                         <x-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')">
                             {{ __('Kritik dan Saran') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys')">
+                            {{ __('Survey Kepuasan') }}
                         </x-nav-link>
                     @endhasrole
                     

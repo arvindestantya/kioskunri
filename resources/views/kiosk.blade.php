@@ -28,6 +28,9 @@
               isFormOpen: false,
               isFeedbackOpen: false,
               isSuccessOpen: false,
+              isSurveyOpen: false,  // State untuk modal survei baru
+              surveyRating: 0,
+              hoverRating: 0,
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -60,7 +63,7 @@
             <a href="#" class="card-link"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
             <a href="#" class="card-link"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
-            <div class="frame-11"></div>
+            <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-12"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
           </div>
 
           <footer class="footer">
@@ -95,7 +98,7 @@
               </div>
           </div>
 
-          <div class="form-modal-overlay" x-show="isFormOpen" @keydown.escape.window="isFormOpen = false" @click.self="isFormOpen = false" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
+          <div class="form-modal-overlay" x-show="isFormOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
               <main class="form" x-show="isFormOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
                   <header class="headline">
                       <h1 class="frame"><span class="text-wrapper">Selamat Datang di {{ $faculty->name }}</span></h1>
@@ -132,15 +135,35 @@
                                 alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
                             });
                         ">
-                      <div class="input"><label for="nama" class="form-label">Nama</label><div class="field"><input id="nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" /></div></div>
-                      <div class="input"><label for="handphone" class="form-label">No. Handphone</label><div class="field"><input id="handphone" name="no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" /></div></div>
+                      <div class="input"><label for="nama" class="form-label">Nama</label><div class="field"><input id="nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[A-Za-z\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/></div></div>
+                      <div class="input"><label for="handphone" class="form-label">No. Handphone</label><div class="field"><input id="handphone" name="no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/></div></div>
                       <div class="input"><label for="email" class="form-label">Email</label><div class="field"><input id="email" name="email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" /></div></div>
-                      <div class="input"><label for="jenis-pengunjung" class="form-label">Jenis Pengunjung</label><div class="field"><select id="jenis-pengunjung" name="jenis_pengunjung" class="content text-wrapper-2" required autocomplete="off"><option value="" disabled selected>Pilih Jenis Pengunjung</option>
-                        <option value="mahasiswa">Mahasiswa</option>
-                        <option value="dosen">Dosen</option>
-                        <option value="tendik">Tendik</option>
-                        <option value="umum">Umum</option>
-                        </select><img class="img" src="{{ secure_asset('img/dropdown.svg') }}" alt="Dropdown icon" aria-hidden="true" /></div>
+                      <div class="input">
+                        <label class="form-label">Jenis Pengunjung</label>
+
+                        <div class="field flex items-center gap-x-6 py-2">
+                            
+                            <div class="flex items-center">
+                                <input type="radio" id="jenis-mahasiswa" name="jenis_pengunjung" value="mahasiswa" class="radio-input" required>
+                                <label for="jenis-mahasiswa" class="radio-label ml-2">Mahasiswa</label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="radio" id="jenis-dosen" name="jenis_pengunjung" value="dosen" class="radio-input" required>
+                                <label for="jenis-dosen" class="radio-label ml-2">Dosen</label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="radio" id="jenis-tendik" name="jenis_pengunjung" value="tendik" class="radio-input" required>
+                                <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
+                                <label for="jenis-umum" class="radio-label ml-2">Umum</label>
+                            </div>
+
+                        </div>
                       </div>
                       <div class="input"><label for="perihal" class="form-label">Perihal</label><div class="field-2"><textarea id="perihal" name="perihal" class="content text-wrapper-2" placeholder="Ketik perihal kunjungan kamu" required autocomplete="off"></textarea></div></div>
                       <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
@@ -148,7 +171,7 @@
               </main>
           </div>
 
-          <div class="form-modal-overlay" x-show="isFeedbackOpen" @keydown.escape.window="isFeedbackOpen = false" @click.self="isFeedbackOpen = false" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
+          <div class="form-modal-overlay" x-show="isFeedbackOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
             <main class="form" x-show="isFeedbackOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
               <header class="headline">
                 <h1 class="frame"><span class="text-wrapper">Kritik & Saran</span></h1>
@@ -191,7 +214,7 @@
                 <div class="input">
                   <label for="nama-feedback" class="form-label">Nama</label>
                   <div class="field">
-                    <input id="nama-feedback" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu" required autocomplete="off" />
+                    <input id="nama-feedback" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu" required autocomplete="off" pattern="[A-Za-z\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/>
                   </div>
                 </div>
                 <div class="input">
@@ -212,6 +235,67 @@
               </form>
             </main>
           </div>
+
+          <div class="form-modal-overlay" x-show="isSurveyOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
+              <main class="form" x-show="isSurveyOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
+                  <header class="headline">
+                      <h1 class="frame"><span class="text-wrapper">Beri Penilaian Anda</span></h1>
+                      <button class="close-button" aria-label="Tutup formulir" @click="isSurveyOpen = false; surveyRating = 0;">
+                          <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                      </button>
+                  </header>
+                  <form class="input-field" @submit.prevent="
+                      const formElement = $el;
+                      const formData = new FormData(formElement);
+                      fetch(`/api/faculties/${$data.facultyId}/surveys`, {
+                          method: 'POST', // <-- PASTIKAN BARIS INI ADA DAN BENAR
+                          body: formData,
+                          headers: {
+                              'Accept': 'application/json'
+                          }
+                      })
+                      .then(response => {
+                          if (response.ok) {
+                              formElement.reset();
+                              isSurveyOpen = false;
+                              surveyRating = 0;
+                              isSuccessOpen = true;
+                              setTimeout(() => { isSuccessOpen = false }, 3000);
+                              } else { /* penanganan error */ }
+                          })
+                          .catch(error => { /* penanganan error */ });
+                      ">
+
+                      <div class="input">
+                          <label for="nama-survey" class="form-label">Nama</label>
+                          <div class="field">
+                            <input id="nama-survey" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu" required autocomplete="off" pattern="[A-Za-z\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/>
+                          </div>
+                          <label class="form-label">Kepuasan Pelayanan</label>
+                          <div class="star-rating" @mouseleave="hoverRating = 0">
+                              <template x-for="i in 5" :key="i">
+                                  <span class="star" 
+                                        @mouseover="hoverRating = i" 
+                                        @click="surveyRating = i"
+                                        :class="{ 'filled': i <= surveyRating || i <= hoverRating }">★</span>
+                              </template>
+                          </div>
+                          <input type="hidden" name="rating" x-model="surveyRating">
+                      </div>
+
+                      <div class="input">
+                          <label for="pesan" class="form-label">Pesan (Opsional)</label>
+                          <div class="field-2">
+                              <textarea id="pesan" name="pesan" class="content text-wrapper-2" placeholder="Ketik pesan Anda di sini" autocomplete="off"></textarea>
+                          </div>
+                      </div>
+
+                      <button type="submit" class="button" :disabled="surveyRating === 0" :class="{ 'button-disabled': surveyRating === 0 }">
+                          <div class="containt"><span class="label">Kirim Penilaian</span></div>
+                      </button>
+                  </form>
+              </main>
+            </div>
 
           
           <div class="success-modal-overlay" x-show="isSuccessOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>

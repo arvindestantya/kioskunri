@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str; // <-- Perbaikan ada di sini
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\GuestsExport;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str; // <-- Perbaikan ada di sini
 
 class GuestController extends Controller
 {
@@ -64,7 +65,38 @@ class GuestController extends Controller
 
         $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
         
-        return view('admin.guests.index', compact('guests'));
+        // --- AWAL TAMBAHAN UNTUK GRAFIK ---
+
+        // 2. Buat query baru khusus untuk data grafik
+        $chartQuery = Guest::query();
+
+        // Filter berdasarkan fakultas jika bukan Super Admin
+        if (!$user->hasRole('Super Admin')) {
+            $chartQuery->where('faculty_id', $user->faculty_id);
+        }
+
+        // Ambil data agregat 7 hari terakhir
+        $guestChartData = $chartQuery
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+            ->where('created_at', '>=', now()->subDays(7))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        // Siapkan data untuk dikirim ke view
+        $chartLabels = $guestChartData->map(function ($item) {
+            return \Carbon\Carbon::parse($item->date)->format('d M Y'); // Format menjadi '25 Jun'
+        });
+        $chartData = $guestChartData->pluck('count');
+
+        // --- AKHIR TAMBAHAN UNTUK GRAFIK ---
+
+        // 3. Kirim semua data (data tabel & data grafik) ke view
+        return view('admin.guests.index', [
+            'guests' => $guests,
+            'chartLabels' => $chartLabels,
+            'chartData' => $chartData,
+        ]);
     }
 
     /**
@@ -79,7 +111,7 @@ class GuestController extends Controller
 
         $guest->delete();
 
-        return redirect()->route('dashboard')
+        return redirect()->route('guests')
                          ->with('success', 'Data tamu berhasil dihapus.');
     }
 
