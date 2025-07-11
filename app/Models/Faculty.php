@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Contact;
 use App\Models\Feedback;
+use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Tambahkan ini jika belum ada
@@ -20,6 +22,16 @@ class Faculty extends Model
     public function flyers(): HasMany
     {
         return $this->hasMany(Flyer::class);
+    }
+    
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+    
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
     }
     
     /**

@@ -6,8 +6,10 @@ use App\Http\Controllers\FlyerController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KioskController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\FacultyController as SuperAdminFacultyController;
@@ -55,6 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/admin/flyers', [FlyerController::class, 'index'])->name('flyers.index');
     Route::post('/admin/flyers', [FlyerController::class, 'store'])->name('flyers.store');
     Route::delete('/admin/flyers/{flyer}', [FlyerController::class, 'destroy'])->name('flyers.destroy');
+    
+    Route::resource('admin/contacts', ContactController::class)->names('contacts');
+    Route::resource('admin/schedules', ScheduleController::class)->names('schedules');
 });
 
 // Route khusus untuk Super Admin

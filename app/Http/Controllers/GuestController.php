@@ -59,6 +59,7 @@ class GuestController extends Controller
                 $query->where('nama', 'like', "%{$search}%")
                       ->orWhere('email', 'like', "%{$search}%")
                       ->orWhere('no_handphone', 'like', "%{$search}%")
+                      ->orWhere('jenis_pengunjung', 'like', "%{$search}%")
                       ->orWhere('perihal', 'like', "%{$search}%");
             });
         }

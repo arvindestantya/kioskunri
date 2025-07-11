@@ -6,41 +6,63 @@ use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use App\Models\Guest;
 use App\Models\Survey;
+use Illuminate\Http\Request; // <-- 1. Import Request
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
-    public function index()
+    // 2. Tambahkan Request $request sebagai parameter
+    public function index(Request $request)
     {
         $user = Auth::user();
+
+        // 3. Ambil periode dari URL, default-nya 'all_time'
+        $period = $request->input('period', 'all_time');
+
         $visitorData = [];
         $ratingData = [];
-
         $facultiesToProcess = [];
 
         if ($user->hasRole('Super Admin')) {
-            // Super Admin melihat semua fakultas
             $facultiesToProcess = Faculty::all();
         } elseif ($user->faculty) {
-            // Admin biasa hanya "melihat" fakultasnya sendiri
             $facultiesToProcess = collect([$user->faculty]);
         }
 
         foreach ($facultiesToProcess as $faculty) {
-            // Ambil jumlah pengunjung
-            $visitorData[$faculty->name] = Guest::where('faculty_id', $faculty->id)->count();
+            // Buat query dasar untuk setiap metrik
+            $guestQuery = Guest::where('faculty_id', $faculty->id);
+            $surveyQuery = Survey::where('faculty_id', $faculty->id);
 
-            // Ambil rata-rata rating
-            $averageRating = Survey::where('faculty_id', $faculty->id)->avg('rating');
+            // Terapkan filter waktu pada query
+            switch ($period) {
+                case 'today':
+                    $guestQuery->whereDate('created_at', today());
+                    $surveyQuery->whereDate('created_at', today());
+                    break;
+                case 'week':
+                    $guestQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    $surveyQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $guestQuery->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
+                    $surveyQuery->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
+                    break;
+                // 'all_time' tidak memerlukan filter tambahan
+            }
 
-            // PERBAIKAN: Jika avg() mengembalikan null (tidak ada survei), anggap nilainya 0.
-            $ratingData[$faculty->name] = round($averageRating ?? 0, 1);
+            // Hitung hasil dari query yang sudah difilter
+            $visitorData[$faculty->name] = $guestQuery->count();
+            $averageRating = $surveyQuery->avg('rating');
+            $ratingData[$faculty->name] = round($averageRating ?? 0, 2);
         }
 
+        // 4. Kirim variabel $currentPeriod ke view
         return view('admin.dashboard', [
             'visitorData' => $visitorData,
             'ratingData' => $ratingData,
+            'currentPeriod' => $period, // <-- INI YANG AKAN MEMPERBAIKI ERROR ANDA
         ]);
     }
 }

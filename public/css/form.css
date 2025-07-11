@@ -27,3 +27,42 @@ textarea.content { resize: vertical; min-height: 90px; }
 .button { display: flex; width: 100%; padding: 10px 0px; align-items: center; justify-content: center; gap: 8px; background-color: var(--semantic-color-background-brand); border-radius: var(--border-radius-m); border: none; cursor: pointer; transition: filter 0.2s ease; margin-top: 8px; }
 .button:hover { filter: brightness(1.1); }
 .button .label { font-family: var(--text-l-semibold-font-family); font-weight: var(--text-l-semibold-font-weight); color: var(--semantic-color-content-primary-inverse); font-size: var(--text-l-semibold-font-size); letter-spacing: var(--text-l-semibold-letter-spacing); line-height: var(--text-l-semibold-line-height); font-style: var(--text-l-semibold-font-style); }
+/*
+ * Style untuk kontainer yang membungkus semua bintang.
+ * Menggunakan flexbox untuk menata bintang secara horizontal.
+*/
+.star-rating {
+    display: flex;
+    justify-content: center; /* Menengahkan bintang-bintang */
+    align-items: center;
+    padding: 8px 0; /* Memberi sedikit ruang vertikal */
+}
+
+/*
+ * Style untuk setiap bintang individu (elemen <span>).
+*/
+.star {
+    font-size: 2.5rem;      /* Ukuran bintang (bisa disesuaikan, misal: 40px) */
+    color: #d1d5db;         /* Warna bintang kosong (abu-abu muda) */
+    cursor: pointer;        /* Mengubah kursor menjadi tangan saat di-hover */
+    transition: color 0.2s ease-in-out; /* Animasi perubahan warna yang halus */
+    margin: 0 4px;          /* Memberi jarak antar bintang */
+}
+
+/*
+ * Style yang diterapkan saat bintang terisi (diklik) atau di-hover.
+ * Kelas .filled ini ditambahkan oleh Alpine.js.
+*/
+.star.filled {
+    color: #f59e0b; /* Warna bintang terisi (kuning/emas) */
+}
+
+/*
+ * (Opsional) Style untuk tombol saat non-aktif,
+ * yaitu ketika belum ada bintang yang dipilih.
+*/
+.button-disabled {
+    background-color: #9ca3af !important; /* Warna abu-abu */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
