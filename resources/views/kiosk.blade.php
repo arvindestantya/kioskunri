@@ -38,6 +38,7 @@
               surveyRating: 0,
               hoverRating: 0,
               isStatsModalOpen: false,
+              isAnnouncementModalOpen: false,
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -65,7 +66,7 @@
             <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah Lokasi Fakultas</figcaption></figure></a>
-            <a href="#" class="card-link"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
+            <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
             <a href="#" class="card-link"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
@@ -479,6 +480,40 @@
                                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Bulan Ini</p>
                             </div>
                         </div>
+                    </div>
+                </main>
+            </div>
+
+            <div class="form-modal-overlay z-50"
+                x-show="isAnnouncementModalOpen"
+                x-transition x-cloak>
+
+                <main class="form !max-w-2xl bg-gray-50" x-show="isAnnouncementModalOpen" x-transition>
+                    <header class="headline border-b">
+                        <h1 class="frame"><span class="text-wrapper">Pengumuman Fakultas</span></h1>
+                        <button class="close-button" aria-label="Tutup" @click="isAnnouncementModalOpen = false">
+                            <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                        </button>
+                    </header>
+
+                    <div class="p-6 sm:p-8">
+                        <ul class="space-y-6">
+                            @forelse ($announcements as $announcement)
+                                <li class="pb-6 border-b border-gray-200 last:border-b-0">
+                                    <p class="text-xs text-gray-500">{{ $announcement->created_at->format('d M Y, H:i') }}</p>
+                                    <h4 class="font-bold text-lg text-gray-800 mt-1">{{ $announcement->title }}</h4>
+                                    <div class="prose prose-sm mt-2 text-gray-600">
+                                        {!! $announcement->content !!}
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="text-center text-gray-500 py-16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-2.104 9.168-3.934" /></svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak Ada Pengumuman</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Saat ini belum ada pengumuman baru.</p>
+                                </li>
+                            @endforelse
+                        </ul>
                     </div>
                 </main>
             </div>

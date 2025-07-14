@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use App\Models\Faculty;
 use App\Models\Schedule;
+use App\Models\Announcement;
 use Illuminate\Support\Facades\DB;
 
 class KioskController extends Controller
@@ -23,6 +24,15 @@ class KioskController extends Controller
             ->take(5)                           // Ambil 5 jadwal teratas
             ->get();
         
+        $announcements = Announcement::where(function ($query) use ($faculty) {
+                // Ambil pengumuman khusus fakultas ATAU pengumuman umum
+                $query->where('faculty_id', $faculty->id)
+                      ->orWhereNull('faculty_id');
+            })
+            ->latest() // Urutkan dari yang paling baru
+            ->take(5)  // Batasi hanya 5 pengumuman
+            ->get();
+        
         // 1. Hitung pengunjung berdasarkan periode
         $todayVisitorCount = Guest::where('faculty_id', $faculty->id)->whereDate('created_at', today())->count();
         $weekVisitorCount = Guest::where('faculty_id', $faculty->id)->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
@@ -38,6 +48,6 @@ class KioskController extends Controller
         $visitorTypeLabels = $visitorTypeCounts->pluck('jenis_pengunjung')->map(fn($val) => ucfirst($val));
         $visitorTypeData = $visitorTypeCounts->pluck('total');
         
-        return view('kiosk', compact('faculty', 'flyers', 'contacts', 'schedules','todayVisitorCount','weekVisitorCount', 'monthVisitorCount', 'visitorTypeLabels', 'visitorTypeData'));
+        return view('kiosk', compact('faculty', 'flyers', 'contacts', 'schedules', 'announcements','todayVisitorCount','weekVisitorCount', 'monthVisitorCount', 'visitorTypeLabels', 'visitorTypeData'));
     }
 }

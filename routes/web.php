@@ -2,6 +2,7 @@
 
 use App\Models\Faculty;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\FlyerController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KioskController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\MapController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\FacultyController as SuperAdminFacultyController;
@@ -62,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('admin/contacts', ContactController::class)->names('contacts');
     Route::resource('admin/schedules', ScheduleController::class)->names('schedules');
     Route::resource('admin/maps', MapController::class)->names('maps');
+    Route::resource('admin/announcements', AnnouncementController::class)->names('announcements');
 });
 
 // Route khusus untuk Super Admin

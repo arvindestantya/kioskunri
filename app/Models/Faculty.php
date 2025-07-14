@@ -6,6 +6,7 @@ use App\Models\Map;
 use App\Models\Contact;
 use App\Models\Feedback;
 use App\Models\Schedule;
+use App\Models\Announcement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Tambahkan ini jika belum ada
@@ -38,6 +39,11 @@ class Faculty extends Model
     public function maps(): HasMany
     {
         return $this->hasMany(Map::class);
+    }
+    
+    public function announcements(): HasMany
+    {
+        return $this->hasMany(Announcement::class);
     }
 
     /**
