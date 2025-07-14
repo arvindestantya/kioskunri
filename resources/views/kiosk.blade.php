@@ -6,7 +6,8 @@
     <title>Kiosk - {{ $faculty->name }}</title>
     <link rel="icon" href="{{ secure_asset('img/logo-type-warna-tulisan-hitam-1.png') }}">
 
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}" />
     <link rel="stylesheet" href="{{ secure_asset('css/globals.css') }}" />
@@ -32,8 +33,11 @@
               isSurveyOpen: false,  // State untuk modal survei baru
               isContactModalOpen: false,
               isScheduleModalOpen: false,
+              isMapModalOpen: false,
+              mapSliderIndex: 0,
               surveyRating: 0,
               hoverRating: 0,
+              isStatsModalOpen: false,
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -59,8 +63,8 @@
           
           <div class="content">
             <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
-            <a href="#" class="card-link"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
-            <a href="#" class="card-link"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah Lokasi Fakultas</figcaption></figure></a>
+            <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
+            <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah Lokasi Fakultas</figcaption></figure></a>
             <a href="#" class="card-link"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
             <a href="#" class="card-link"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
             <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
@@ -300,30 +304,25 @@
               </main>
             </div>
 
-            <!-- === MODAL KONTAK INFORMASI (DESAIN BARU) === -->
             <div class="form-modal-overlay z-50"
                 x-show="isContactModalOpen"
-                @click.self="isContactModalOpen = false"
-                @keydown.escape.window="isContactModalOpen = false"
                 x-transition x-cloak>
 
-                <main class="form !max-w-lg bg-white dark:bg-gray-800" x-show="isContactModalOpen" x-transition>
+                <main class="form !max-w-lg bg-white" x-show="isContactModalOpen" x-transition>
                     <header class="headline">
-                        <h1 class="frame"><span class="text-wrapper dark:text-white">Kontak Informasi</span></h1>
+                        <h1 class="frame"><span class="text-wrapper ">Kontak Informasi</span></h1>
                         <button class="close-button" aria-label="Tutup" @click="isContactModalOpen = false">
                             <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
                         </button>
                     </header>
 
                     <div class="p-6 sm:p-8 space-y-4">
-                        <h2 class="text-xl font-bold text-center text-gray-800 dark:text-white">{{ $faculty->name }}</h2>
+                        <h2 class="text-xl font-bold text-center text-gray-800 ">{{ $faculty->name }}</h2>
 
-                        <!-- Daftar Kontak dengan Ikon -->
                         <ul class="space-y-5 pt-4">
                             @forelse ($contacts as $contact)
                                 <li class="flex items-start gap-4">
-                                    <div class="shrink-0 w-6 h-6 text-gray-500 dark:text-gray-400 mt-1">
-                                        {{-- Logika untuk memilih ikon berdasarkan jenis kontak --}}
+                                    <div class="shrink-0 w-6 h-6 text-gray-500 mt-1">
                                         @switch(strtolower($contact->jenis_kontak))
                                             @case('no. telepon')
                                             @case('no telepon')
@@ -338,12 +337,9 @@
                                             @case('alamat')
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
                                                 @break
-                                            {{-- === IKON BARU UNTUK INSTAGRAM === --}}
                                             @case('instagram')
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
-                                                @break
-                                            
-                                            {{-- === IKON BARU UNTUK WHATSAPP === --}}
+                                                @break                                            
                                             @case('whatsapp')
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.487 5.235 3.487 8.413 0 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.447-4.433-9.886-9.889-9.886-5.448 0-9.886 4.434-9.889 9.885.002 2.024.603 3.965 1.738 5.63l-1.192 4.355 4.462-1.165zM16.47 14.382c-.215-.108-1.267-.627-1.466-.701-.199-.073-.343-.108-.487.108-.144.217-.553.701-.679.846-.126.144-.253.162-.468.054-.217-.108-.901-.334-1.716-.99-1.277-1.023-1.466-1.902-1.466-2.247s-.036-.51.072-.654c.108-.144.234-.36.343-.51.108-.144.144-.253.216-.42.072-.162.036-.306-.018-.414-.054-.108-.487-1.17-.679-1.598-.18-.396-.36-.343-.487-.343-.126 0-.27.009-.414.009-.144 0-.378.054-.577.271-.199.217-.769.752-.769 1.826s.787 2.121.896 2.269c.108.144 1.554 2.366 3.759 3.312.54.234.958.378 1.287.486.487.162.928.144 1.267.081.378-.054 1.267-.519 1.448-.986.18-.468.18-.867.126-.986-.054-.108-.199-.162-.414-.27z"/></svg>
                                                 @break
@@ -352,14 +348,14 @@
                                         @endswitch
                                     </div>
                                     <div>
-                                        <p class="font-semibold text-gray-600 dark:text-gray-300">{{ $contact->jenis_kontak }}</p>
-                                        <p class="text-gray-800 dark:text-white break-words">{{ $contact->detail }}</p>
+                                        <p class="font-semibold text-gray-600">{{ $contact->jenis_kontak }}</p>
+                                        <p class="text-gray-800  break-words">{{ $contact->detail }}</p>
                                     </div>
                                 </li>
                             @empty
                                 <li class="text-center text-gray-500 py-16">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6.75h-6v10.5h6" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 17.25H4.5a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h9" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 13.5h4.5m-4.5-3h4.5m-4.5-3h4.5" /></svg>
-                                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Kontak Kosong</h3>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900 ">Kontak Kosong</h3>
                                     <p class="mt-1 text-sm text-gray-500">Belum ada informasi kontak yang tersedia.</p>
                                 </li>
                             @endforelse
@@ -368,18 +364,13 @@
                 </main>
             </div>
 
-
-            <!-- === MODAL JADWAL PENTING (MENGGUNAKAN INLINE STYLE UNTUK TES) === -->
-            <!-- === MODAL JADWAL PENTING (KEMBALI MENGGUNAKAN TAILWIND CSS) === -->
             <div class="form-modal-overlay z-50"
                 x-show="isScheduleModalOpen"
-                @click.self="isScheduleModalOpen = false"
-                @keydown.escape.window="isScheduleModalOpen = false"
                 x-transition x-cloak>
 
-                <main class="form !max-w-2xl bg-white dark:bg-gray-800" x-show="isScheduleModalOpen" x-transition>
+                <main class="form !max-w-2xl bg-white" x-show="isScheduleModalOpen" x-transition>
                     <header class="headline">
-                        <h1 class="frame"><span class="text-wrapper dark:text-white">Jadwal Penting</span></h1>
+                        <h1 class="frame"><span class="text-wrapper ">Jadwal Penting</span></h1>
                         <button class="close-button" aria-label="Tutup" @click="isScheduleModalOpen = false">
                             <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
                         </button>
@@ -388,30 +379,28 @@
                     <div class="p-6 sm:p-8">
                         <ul class="space-y-6">
                             @forelse ($schedules as $schedule)
-                                <li class="flex items-start gap-4 pb-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                                <li class="flex items-start gap-4 pb-6 border-b border-gray-200 last:border-b-0">
                                     
-                                    <!-- Blok Tanggal di Kiri -->
-                                    <div class="flex-shrink-0 w-20 text-center bg-indigo-50 dark:bg-indigo-900/50 p-3 rounded-lg">
-                                        <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+                                    <div class="flex-shrink-0 w-20 text-center bg-indigo-50 p-3 rounded-lg">
+                                        <p class="text-3xl font-bold text-indigo-600">
                                             {{ $schedule->start_date->format('d') }}
                                         </p>
-                                        <p class="text-sm font-semibold text-indigo-500 dark:text-indigo-300 uppercase">
+                                        <p class="text-sm font-semibold text-indigo-500 uppercase">
                                             {{ $schedule->start_date->format('M') }}
                                         </p>
                                     </div>
 
-                                    <!-- Detail Jadwal di Kanan -->
                                     <div class="flex-grow">
-                                        <h4 class="font-bold text-lg text-gray-800 dark:text-white">{{ $schedule->title }}</h4>
+                                        <h4 class="font-bold text-lg text-gray-800 ">{{ $schedule->title }}</h4>
                                         
                                         @if($schedule->end_date && $schedule->end_date->ne($schedule->start_date))
-                                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                            <p class="text-xs font-medium text-gray-500 mb-2">
                                                 Berlangsung hingga {{ $schedule->end_date->format('d M Y') }}
                                             </p>
                                         @endif
 
                                         @if($schedule->description)
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                            <p class="text-sm text-gray-600 mt-1">
                                                 {{ $schedule->description }}
                                             </p>
                                         @endif
@@ -420,11 +409,76 @@
                             @empty
                                 <li class="text-center text-gray-500 py-16">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak Ada Jadwal</h3>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900 ">Tidak Ada Jadwal</h3>
                                     <p class="mt-1 text-sm text-gray-500">Belum ada jadwal penting yang akan datang.</p>
                                 </li>
                             @endforelse
                         </ul>
+                    </div>
+                </main>
+            </div>
+
+            <div class="form-modal-overlay z-50" x-show="isMapModalOpen" x-transition x-cloak>
+                <main class="form !max-w-6xl bg-gray-50" x-show="isMapModalOpen" x-transition>
+                    <header class="headline border-b">
+                        <h1 class="frame"><span class="text-wrapper">Denah Lokasi {{ $faculty->name }}</span></h1>
+                        <button class="close-button" @click="isMapModalOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
+                    </header>
+                    <div class="p-4 bg-gray-100">
+                        @if($faculty->maps->isNotEmpty())
+                            
+                            @foreach($faculty->maps as $index => $map)
+                                <div x-show="mapSliderIndex === {{ $index }}" class="duration-300" x-transition.opacity>
+                                    <img src="{{ asset('storage/' . $map->path) }}" alt="Denah Lokasi {{ $faculty->name }} #{{ $index + 1 }}" class="w-full h-auto rounded-lg shadow-md">
+                                </div>
+                            @endforeach
+
+                            @if($faculty->maps->count() > 1)
+                                <button @click="mapSliderIndex = (mapSliderIndex - 1 + {{ $faculty->maps->count() }}) % {{ $faculty->maps->count() }}" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80">‹</button>
+                                <button @click="mapSliderIndex = (mapSliderIndex + 1) % {{ $faculty->maps->count() }}" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80">›</button>
+                            @endif
+
+                        @else
+                            <p class="text-center text-gray-500 py-20">Denah lokasi untuk fakultas ini belum tersedia.</p>
+                        @endif
+                    </div>
+                </main>
+            </div>
+
+            <div class="form-modal-overlay z-50" x-show="isStatsModalOpen" x-transition x-cloak>
+                <main class="form !max-w-3xl bg-gray-50" x-show="isStatsModalOpen" x-transition>
+                    <header class="headline border-b">
+                        <h1 class="frame"><span class="text-wrapper">Statistik Pengunjung</span></h1>
+                        <button class="close-button" @click="isStatsModalOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
+                    </header>
+                    
+                    <div class="p-6 sm:p-8 flex justify-center items-center">
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-6 text-center">
+                            
+                            <div class="w-40 h-40 bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                                <div class="bg-blue-100 p-3 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                </div>
+                                <p class="text-3xl font-extrabold text-gray-800">{{ $todayVisitorCount ?? 0 }}</p>
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Hari Ini</p>
+                            </div>
+
+                            <div class="w-40 h-40 bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                                <div class="bg-green-100 p-3 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /><path d="M9 14l2 2 4-4"></path></svg>
+                                </div>
+                                <p class="text-3xl font-extrabold text-gray-800">{{ $weekVisitorCount ?? 0 }}</p>
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Minggu Ini</p>
+                            </div>
+
+                            <div class="w-40 h-40 bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                                <div class="bg-purple-100 p-3 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                </div>
+                                <p class="text-3xl font-extrabold text-gray-800">{{ $monthVisitorCount ?? 0 }}</p>
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Bulan Ini</p>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
@@ -441,10 +495,7 @@
         </div>
       </div>
     </div>
-    <script
-        async
-        defer
-        src="https://152.42.230.33:9000/api/application/embed?protocol=http&host=152.42.230.33:9000&token=e0678fb35e611c98">
+    <script>
     </script>
 </body>
 </html>

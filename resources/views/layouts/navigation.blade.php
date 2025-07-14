@@ -62,6 +62,9 @@
                                     <x-dropdown-link :href="route('schedules.index')">
                                         {{ __('Manajemen Jadwal') }}
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('maps.index')">
+                                        {{ __('Manajemen Denah') }}
+                                    </x-dropdown-link>
                                     </x-slot>
                                 
                             </x-dropdown>
@@ -133,16 +136,28 @@
 
             {{-- Menu ini hanya akan muncul untuk Admin Fakultas di versi mobile --}}
             @hasrole('Faculty Admin')
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link :href="route('guests')" :active="request()->routeIs('guests')">
                     {{ __('Buku Tamu') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('flyers.index')" :active="request()->routeIs('flyers.index')">
-                    {{ __('Manajemen Flyer') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')">
                     {{ __('Kritik dan Saran') }}
                 </x-responsive-nav-link>
-            @endhasrole
+                <x-responsive-nav-link :href="route('surveys')" :active="request()->routeIs('surveys')">
+                    {{ __('Survey Kepuasan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('flyers.index')" :active="request()->routeIs('flyers.index')">
+                    {{ __('Manajemen Flyer') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.index')">
+                    {{ __('Manajemen Kontak') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.index')">
+                    {{ __('Manajemen Jadwal') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('maps.index')" :active="request()->routeIs('maps.index')">
+                    {{ __('Manajemen Denah') }}
+                </x-responsive-nav-link>
+                @endhasrole
             
             {{-- Menu ini hanya akan muncul untuk Super Admin di versi mobile --}}
             @hasrole('Super Admin')

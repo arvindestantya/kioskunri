@@ -55,7 +55,7 @@ class AdminDashboardController extends Controller
             // Hitung hasil dari query yang sudah difilter
             $visitorData[$faculty->name] = $guestQuery->count();
             $averageRating = $surveyQuery->avg('rating');
-            $ratingData[$faculty->name] = round($averageRating ?? 0, 2);
+            $ratingData[$faculty->name] = round($averageRating ?? 0, 1);
         }
 
         // 4. Kirim variabel $currentPeriod ke view

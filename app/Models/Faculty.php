@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Map;
 use App\Models\Contact;
 use App\Models\Feedback;
 use App\Models\Schedule;
@@ -34,6 +35,11 @@ class Faculty extends Model
         return $this->hasMany(Schedule::class);
     }
     
+    public function maps(): HasMany
+    {
+        return $this->hasMany(Map::class);
+    }
+
     /**
      * Mendefinisikan bahwa satu fakultas memiliki banyak tamu.
      */

@@ -2089,7 +2089,7 @@ img {
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 
-.card-link:hover .frame-3, .card-link:hover .frame-4, .card-link:hover .frame-5, .card-link:hover .frame-6, .card-link:hover .frame-7, .card-link:hover .frame-8, .card-link:hover .frame-9, .card-link:hover .frame-10 {
+.card-link:hover .frame-3, .card-link:hover .frame-4, .card-link:hover .frame-5, .card-link:hover .frame-6, .card-link:hover .frame-7, .card-link:hover .frame-8, .card-link:hover .frame-9, .card-link:hover .frame-10, .card-link:hover .frame-11 {
   cursor: pointer;
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
