@@ -9,13 +9,10 @@ use App\Exports\GuestsExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str; // <-- Perbaikan ada di sini
+use Illuminate\Support\Str;
 
 class GuestController extends Controller
 {
-    /**
-     * Menyimpan data tamu baru dari form untuk fakultas tertentu.
-     */
     public function store(Request $request, Faculty $faculty)
     {
         $validator = Validator::make($request->all(), [
@@ -38,9 +35,6 @@ class GuestController extends Controller
         return response()->json(['message' => 'Data tamu berhasil disimpan!', 'data' => $guest], 201);
     }
 
-    /**
-     * Menampilkan semua data tamu untuk admin dengan fitur PENCARIAN.
-     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -65,18 +59,13 @@ class GuestController extends Controller
         }
 
         $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
-        
-        // --- AWAL TAMBAHAN UNTUK GRAFIK ---
 
-        // 2. Buat query baru khusus untuk data grafik
         $chartQuery = Guest::query();
 
-        // Filter berdasarkan fakultas jika bukan Super Admin
         if (!$user->hasRole('Super Admin')) {
             $chartQuery->where('faculty_id', $user->faculty_id);
         }
 
-        // Ambil data agregat 7 hari terakhir
         $guestChartData = $chartQuery
             ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
             ->where('created_at', '>=', now()->subDays(7))
@@ -84,15 +73,11 @@ class GuestController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        // Siapkan data untuk dikirim ke view
         $chartLabels = $guestChartData->map(function ($item) {
-            return \Carbon\Carbon::parse($item->date)->format('d M Y'); // Format menjadi '25 Jun'
+            return \Carbon\Carbon::parse($item->date)->format('d M Y');
         });
         $chartData = $guestChartData->pluck('count');
 
-        // --- AKHIR TAMBAHAN UNTUK GRAFIK ---
-
-        // 3. Kirim semua data (data tabel & data grafik) ke view
         return view('admin.guests.index', [
             'guests' => $guests,
             'chartLabels' => $chartLabels,
@@ -100,9 +85,6 @@ class GuestController extends Controller
         ]);
     }
 
-    /**
-     * Menghapus data tamu.
-     */
     public function destroy(Guest $guest)
     {
         $user = auth()->user();
@@ -116,9 +98,6 @@ class GuestController extends Controller
                          ->with('success', 'Data tamu berhasil dihapus.');
     }
 
-    /**
-     * Mengekspor data tamu ke Excel, disesuaikan dengan peran user.
-     */
     public function export(Request $request)
     {
         $user = auth()->user();

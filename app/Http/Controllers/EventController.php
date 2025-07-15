@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    //
     public function index()
     {
         $user = Auth::user();
@@ -18,7 +17,7 @@ class EventController extends Controller
 
         if (!$user->hasRole('Super Admin')) {
             $query->where('faculty_id', $user->faculty_id)
-                  ->orWhereNull('faculty_id'); // Tampilkan juga jadwal umum
+                  ->orWhereNull('faculty_id');
         }
 
         $events = $query->latest('start_time')->get();
@@ -34,7 +33,6 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        // Tambahkan validasi untuk 'title'
         $request->validate([
             'faculty_id' => 'required|exists:faculties,id',
             'title' => 'required|string|max:255',
@@ -45,14 +43,12 @@ class EventController extends Controller
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $path = null; // 1. Inisialisasi path sebagai null
+        $path = null;
 
-        // 2. PERBAIKAN: Hanya simpan file jika ada yang diunggah
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('events', 'public');
         }
 
-        // Tambahkan 'title' saat membuat data baru
         Event::create([
             'faculty_id' => $request->faculty_id,
             'title' => $request->title,
@@ -73,7 +69,6 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        // Tambahkan validasi untuk 'title'
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -83,18 +78,14 @@ class EventController extends Controller
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Update judul
         $event->title = $request->title;
         $event->description = $request->description;
         $event->location = $request->location;
         $event->start_time = $request->start_time;
         $event->end_time = $request->end_time;
 
-        // Logika untuk mengganti gambar jika ada file baru
         if ($request->hasFile('image_path')) {
-            // Hapus gambar lama
             Storage::disk('public')->delete($event->path);
-            // Simpan gambar baru dan update path
             $event->path = $request->file('image_path')->store('events', 'public');
         }
 

@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
-    /**
-     * Menampilkan daftar semua kontak.
-     */
     public function index()
     {
         $user = Auth::user();
@@ -27,19 +24,12 @@ class ContactController extends Controller
         return view('admin.contacts.index', compact('contacts'));
     }
 
-    /**
-     * Menampilkan form untuk membuat kontak baru.
-     */
     public function create()
     {
-        // PERBAIKAN: Kirim data fakultas ke view untuk dropdown Super Admin.
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.contacts.create', compact('faculties'));
     }
     
-    /**
-     * Menyimpan kontak baru ke database.
-     */
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -65,19 +55,12 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('success', 'Kontak Informasi berhasil ditambahkan.');
     }
     
-    /**
-     * Menampilkan form untuk mengedit kontak.
-     */
     public function edit(Contact $contact)
     {
-        // PERBAIKAN: Kirim data $contact dan $faculties ke view.
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.contacts.edit', compact('contact', 'faculties'));
     }
     
-    /**
-     * Memperbarui kontak di database.
-     */
     public function update(Request $request, Contact $contact)
     {
         $user = Auth::user();
@@ -99,9 +82,6 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('success', 'Kontak Informasi berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus kontak dari database.
-     */
     public function destroy(Contact $contact)
     {
         $user = auth()->user();

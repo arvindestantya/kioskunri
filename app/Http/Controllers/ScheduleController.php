@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Menampilkan daftar semua jadwal.
-     */
     public function index()
     {
         $user = Auth::user();
@@ -19,7 +16,7 @@ class ScheduleController extends Controller
 
         if (!$user->hasRole('Super Admin')) {
             $query->where('faculty_id', $user->faculty_id)
-                  ->orWhereNull('faculty_id'); // Tampilkan juga jadwal umum
+                  ->orWhereNull('faculty_id');
         }
 
         $schedules = $query->latest('start_date')->get();
@@ -27,18 +24,12 @@ class ScheduleController extends Controller
         return view('admin.schedules.index', compact('schedules'));
     }
 
-    /**
-     * Menampilkan form untuk membuat jadwal baru.
-     */
     public function create()
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.schedules.create', compact('faculties'));
     }
 
-    /**
-     * Menyimpan jadwal baru ke database.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -54,18 +45,12 @@ class ScheduleController extends Controller
         return redirect()->route('schedules.index')->with('success', 'Jadwal baru berhasil ditambahkan.');
     }
 
-    /**
-     * Menampilkan form untuk mengedit jadwal.
-     */
     public function edit(Schedule $schedule)
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.schedules.edit', compact('schedule', 'faculties'));
     }
 
-    /**
-     * Memperbarui jadwal di database.
-     */
     public function update(Request $request, Schedule $schedule)
     {
         $request->validate([
@@ -81,12 +66,8 @@ class ScheduleController extends Controller
         return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus jadwal dari database.
-     */
     public function destroy(Schedule $schedule)
     {
-        // Otorisasi: hanya Super Admin atau admin dari fakultas yang sama yang bisa menghapus
         $user = Auth::user();
         if (!$user->hasRole('Super Admin') && $schedule->faculty_id !== $user->faculty_id) {
             abort(403, 'AKSI TIDAK DIIZINKAN.');

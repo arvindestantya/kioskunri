@@ -18,14 +18,10 @@ class MapController extends Controller
         $facultiesWithMaps = collect();
 
         if ($user->hasRole('Super Admin')) {
-            // Super Admin bisa mengupload untuk semua fakultas
             $facultiesForUpload = Faculty::orderBy('name')->get();
-            // Dan melihat semua denah yang ada
             $facultiesWithMaps = Faculty::has('maps')->with('maps')->get();
         } elseif ($user->faculty) {
-            // Admin Fakultas hanya bisa mengupload untuk fakultasnya
             $facultiesForUpload = collect([$user->faculty]);
-            // Dan hanya melihat denah fakultasnya
             $facultiesWithMaps = collect([$user->faculty->load('maps')]);
         }
 
@@ -40,19 +36,17 @@ class MapController extends Controller
 
     public function store(Request $request)
     {
-        // Tambahkan validasi untuk 'title'
         $request->validate([
             'faculty_id' => 'required|exists:faculties,id',
-            'title' => 'required|string|max:255', // <-- Validasi baru
+            'title' => 'required|string|max:255',
             'map_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $path = $request->file('map_image')->store('maps', 'public');
 
-        // Tambahkan 'title' saat membuat data baru
         Map::create([
             'faculty_id' => $request->faculty_id,
-            'title' => $request->title, // <-- Simpan judul
+            'title' => $request->title,
             'path' => $path,
         ]);
 
@@ -66,20 +60,15 @@ class MapController extends Controller
 
     public function update(Request $request, Map $map)
     {
-        // Tambahkan validasi untuk 'title'
         $request->validate([
-            'title' => 'required|string|max:255', // <-- Validasi baru
-            'map_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Dibuat nullable agar gambar tidak wajib diganti
+            'title' => 'required|string|max:255', 
+            'map_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Update judul
         $map->title = $request->title;
 
-        // Logika untuk mengganti gambar jika ada file baru
         if ($request->hasFile('map_image')) {
-            // Hapus gambar lama
             Storage::disk('public')->delete($map->path);
-            // Simpan gambar baru dan update path
             $map->path = $request->file('map_image')->store('maps', 'public');
         }
 

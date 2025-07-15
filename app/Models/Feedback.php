@@ -10,16 +10,11 @@ class Feedback extends Model
     use HasFactory;
     protected $table = 'feedbacks';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'nama',
         'kritik',
         'saran',
-        'faculty_id', // <-- TAMBAHKAN BARIS INI
+        'faculty_id',
     ];
     
 }

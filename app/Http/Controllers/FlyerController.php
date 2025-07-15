@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class FlyerController extends Controller
 {
-    /**
-     * Menampilkan halaman manajemen flyer.
-     */
     public function index()
     {
         $user = auth()->user();
@@ -29,9 +26,6 @@ class FlyerController extends Controller
         return view('admin.flyers.index', compact('flyers', 'faculties'));
     }
 
-    /**
-     * Menyimpan flyer baru yang di-upload.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -61,9 +55,6 @@ class FlyerController extends Controller
         return redirect()->route('flyers.index')->with('success', 'Flyer berhasil di-upload.');
     }
 
-    /**
-     * Menghapus flyer.
-     */
     public function destroy(Flyer $flyer)
     {
         $user = auth()->user();

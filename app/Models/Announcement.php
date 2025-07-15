@@ -13,7 +13,7 @@ class Announcement extends Model
     protected $fillable = [
         'title',
         'content',
-        'faculty_id', // <-- TAMBAHKAN BARIS INI
+        'faculty_id',
     ];
 
     public function faculty(): BelongsTo

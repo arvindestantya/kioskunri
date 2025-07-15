@@ -17,7 +17,7 @@ class AnnouncementController extends Controller
 
         if (!$user->hasRole('Super Admin')) {
             $query->where('faculty_id', $user->faculty_id)
-                  ->orWhereNull('faculty_id'); // Tampilkan juga Pengumuman umum
+                  ->orWhereNull('faculty_id');
         }
 
         $announcements = $query->latest()->get();
@@ -25,18 +25,12 @@ class AnnouncementController extends Controller
         return view('admin.announcements.index', compact('announcements'));
     }
 
-    /**
-     * Menampilkan form untuk membuat Pengumuman baru.
-     */
     public function create()
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.announcements.create', compact('faculties'));
     }
 
-    /**
-     * Menyimpan Pengumuman baru ke database.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -50,18 +44,12 @@ class AnnouncementController extends Controller
         return redirect()->route('announcements.index')->with('success', 'Pengumuman baru berhasil ditambahkan.');
     }
 
-    /**
-     * Menampilkan form untuk mengedit Pengumuman.
-     */
     public function edit(Announcement $announcement)
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('admin.announcements.edit', compact('announcement', 'faculties'));
     }
 
-    /**
-     * Memperbarui Pengumuman di database.
-     */
     public function update(Request $request, Announcement $announcement)
     {
         $request->validate([
@@ -75,12 +63,8 @@ class AnnouncementController extends Controller
         return redirect()->route('announcements.index')->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus Pengumuman dari database.
-     */
     public function destroy(Announcement $announcement)
     {
-        // Otorisasi: hanya Super Admin atau admin dari fakultas yang sama yang bisa menghapus
         $user = Auth::user();
         if (!$user->hasRole('Super Admin') && $announcement->faculty_id !== $user->faculty_id) {
             abort(403, 'AKSI TIDAK DIIZINKAN.');

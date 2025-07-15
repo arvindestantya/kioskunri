@@ -10,15 +10,10 @@ class Survey extends Model
     use HasFactory;
     protected $table = 'surveys';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'nama',
         'rating',
         'pesan',
-        'faculty_id', // <-- TAMBAHKAN BARIS INI
+        'faculty_id',
     ];
 }

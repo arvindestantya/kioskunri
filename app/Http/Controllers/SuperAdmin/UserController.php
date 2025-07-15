@@ -12,12 +12,8 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Menampilkan daftar semua user (selain Super Admin itu sendiri).
-     */
     public function index()
     {
-        // Ambil semua user yang BUKAN Super Admin
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', '!=', 'Super Admin');
         })->with('faculty')->latest()->paginate(10);
@@ -25,18 +21,12 @@ class UserController extends Controller
         return view('superadmin.users.index', compact('users'));
     }
 
-    /**
-     * Menampilkan form untuk membuat user baru.
-     */
     public function create()
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('superadmin.users.create', compact('faculties'));
     }
 
-    /**
-     * Menyimpan user baru ke database.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -53,7 +43,6 @@ class UserController extends Controller
             'faculty_id' => $request->faculty_id,
         ]);
 
-        // Berikan peran "Faculty Admin" secara otomatis
         $facultyAdminRole = Role::findByName('Faculty Admin');
         $user->assignRole($facultyAdminRole);
 
@@ -61,18 +50,12 @@ class UserController extends Controller
                          ->with('success', 'User Admin Fakultas berhasil dibuat.');
     }
 
-    /**
-     * Menampilkan form untuk mengedit user.
-     */
     public function edit(User $user)
     {
         $faculties = Faculty::orderBy('name')->get();
         return view('superadmin.users.edit', compact('user', 'faculties'));
     }
 
-    /**
-     * Memperbarui data user di database.
-     */
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -88,7 +71,6 @@ class UserController extends Controller
             'faculty_id' => $request->faculty_id,
         ]);
 
-        // Hanya update password jika diisi
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);
         }
@@ -97,12 +79,8 @@ class UserController extends Controller
                          ->with('success', 'User Admin Fakultas berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus user dari database.
-     */
     public function destroy(User $user)
     {
-        // Tambahkan perlindungan agar tidak bisa menghapus diri sendiri
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
         }

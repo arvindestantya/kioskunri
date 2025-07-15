@@ -6,18 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use App\Models\Guest;
 use App\Models\Survey;
-use Illuminate\Http\Request; // <-- 1. Import Request
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
-    // 2. Tambahkan Request $request sebagai parameter
     public function index(Request $request)
     {
         $user = Auth::user();
 
-        // 3. Ambil periode dari URL, default-nya 'all_time'
         $period = $request->input('period', 'all_time');
 
         $visitorData = [];
@@ -31,11 +29,9 @@ class AdminDashboardController extends Controller
         }
 
         foreach ($facultiesToProcess as $faculty) {
-            // Buat query dasar untuk setiap metrik
             $guestQuery = Guest::where('faculty_id', $faculty->id);
             $surveyQuery = Survey::where('faculty_id', $faculty->id);
 
-            // Terapkan filter waktu pada query
             switch ($period) {
                 case 'today':
                     $guestQuery->whereDate('created_at', today());
@@ -49,20 +45,17 @@ class AdminDashboardController extends Controller
                     $guestQuery->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
                     $surveyQuery->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
                     break;
-                // 'all_time' tidak memerlukan filter tambahan
             }
 
-            // Hitung hasil dari query yang sudah difilter
             $visitorData[$faculty->name] = $guestQuery->count();
             $averageRating = $surveyQuery->avg('rating');
             $ratingData[$faculty->name] = round($averageRating ?? 0, 1);
         }
 
-        // 4. Kirim variabel $currentPeriod ke view
         return view('admin.dashboard', [
             'visitorData' => $visitorData,
             'ratingData' => $ratingData,
-            'currentPeriod' => $period, // <-- INI YANG AKAN MEMPERBAIKI ERROR ANDA
+            'currentPeriod' => $period,
         ]);
     }
 }

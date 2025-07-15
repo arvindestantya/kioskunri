@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class FeedbackController extends Controller
 {
-    /**
-     * Menyimpan data tamu baru dari form untuk fakultas tertentu.
-     */
     public function store(Request $request, Faculty $faculty)
     {
         $validator = Validator::make($request->all(), [
@@ -35,9 +32,6 @@ class FeedbackController extends Controller
         return response()->json(['message' => 'Data tamu berhasil disimpan!', 'data' => $feedback], 201);
     }
 
-    /**
-     * Menampilkan semua data tamu untuk admin dengan fitur PENCARIAN.
-     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -64,9 +58,6 @@ class FeedbackController extends Controller
         return view('admin.feedbacks.index', compact('feedbacks'));
     }
 
-    /**
-     * Menghapus data tamu.
-     */
     public function destroy(Feedback $feedback)
     {
         $user = auth()->user();
@@ -80,9 +71,6 @@ class FeedbackController extends Controller
                          ->with('success', 'Data tamu berhasil dihapus.');
     }
 
-    /**
-     * Mengekspor data tamu ke Excel, disesuaikan dengan peran user.
-     */
     public function export(Request $request)
     {
         $user = auth()->user();

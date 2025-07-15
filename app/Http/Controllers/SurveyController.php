@@ -10,7 +10,7 @@ use App\Exports\SurveysExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Survey; // Gunakan model Survey
+use App\Models\Survey;
 
 class SurveyController extends Controller
 {
@@ -36,9 +36,6 @@ class SurveyController extends Controller
         return response()->json(['message' => 'Survei berhasil disimpan!'], 201);
     }
 
-    /**
-     * Menampilkan semua data tamu untuk admin dengan fitur PENCARIAN.
-     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -61,18 +58,12 @@ class SurveyController extends Controller
         }
 
         $surveys = $surveysQuery->latest()->paginate(15)->withQueryString();
-        
-        // --- AWAL LOGIKA UNTUK GRAFIK ---
-
-        // 2. Query untuk menghitung rata-rata rating per hari (7 hari terakhir)
         $ratingQuery = Survey::query();
 
-        // Terapkan filter fakultas jika bukan Super Admin
         if (!$user->hasRole('Super Admin')) {
             $ratingQuery->where('faculty_id', $user->faculty_id);
         }
 
-        // Lanjutkan query untuk menghitung rata-rata harian
         $ratingChartData = $ratingQuery->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('AVG(rating) as avg_rating')
@@ -82,7 +73,6 @@ class SurveyController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-        // Siapkan data untuk Chart.js (tidak berubah)
         $chartLabels = $ratingChartData->map(function ($item) {
             return \Carbon\Carbon::parse($item->date)->format('d M Y');
         });
@@ -90,27 +80,15 @@ class SurveyController extends Controller
             return round($item->avg_rating, 2);
         });
 
-        // --- AKHIR LOGIKA UNTUK GRAFIK ---
-
-
-        // --- AWAL LOGIKA UNTUK RATING KESELURUHAN ---
-        
-        // 3. Buat query dasar untuk data keseluruhan
         $overallQuery = Survey::query();
         
-        // Terapkan filter fakultas jika bukan Super Admin
         if (!$user->hasRole('Super Admin')) {
             $overallQuery->where('faculty_id', $user->faculty_id);
         }
         
-        // Gunakan query yang sudah difilter untuk menghitung rata-rata dan total
         $overallAverageRating = $overallQuery->avg('rating');
         $totalSurveys = $overallQuery->count();
 
-        // --- AKHIR LOGIKA UNTUK RATING KESELURUHAN ---
-
-
-        // Kirim semua data yang sudah difilter ke view
         return view('admin.surveys.index', [
             'surveys' => $surveys,
             'chartLabels' => $chartLabels,
@@ -120,10 +98,6 @@ class SurveyController extends Controller
         ]);
     }
 
-
-    /**
-     * Menghapus data tamu.
-     */
     public function destroy(Survey $survey)
     {
         $user = auth()->user();
@@ -137,9 +111,6 @@ class SurveyController extends Controller
                          ->with('success', 'Data tamu berhasil dihapus.');
     }
 
-    /**
-     * Mengekspor data tamu ke Excel, disesuaikan dengan peran user.
-     */
     public function export(Request $request)
     {
         $user = auth()->user();

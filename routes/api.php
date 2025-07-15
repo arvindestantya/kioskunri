@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\GuestController; // <-- TAMBAHKAN BARIS INI
+use App\Http\Controllers\GuestController;
 
 /*
 |--------------------------------------------------------------------------
