@@ -36,7 +36,7 @@
                                 
                                 <x-slot name="trigger">
                                     <button class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none 
-                                        @if (request()->routeIs('flyers.index', 'contacts.index', 'schedules.index', 'maps.index', 'announcements.index'))
+                                        @if (request()->routeIs('flyers.index', 'contacts.index', 'schedules.index', 'maps.index', 'announcements.index', 'events.index'))
                                             border-indigo-400 text-gray-900 focus:border-indigo-700
                                         @else
                                             border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300
@@ -67,6 +67,9 @@
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('announcements.index')">
                                         {{ __('Manajemen Pengumuman') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('events.index')">
+                                        {{ __('Manajemen Kegiatan') }}
                                     </x-dropdown-link>
                                     </x-slot>
                                 
@@ -159,6 +162,12 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('maps.index')" :active="request()->routeIs('maps.index')">
                     {{ __('Manajemen Denah') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('announcements.index')" :active="request()->routeIs('announcements.index')">
+                    {{ __('Manajemen Pengumuman') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
+                    {{ __('Manajemen Kegiatan') }}
                 </x-responsive-nav-link>
                 @endhasrole
             

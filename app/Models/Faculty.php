@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Map;
+use App\Models\Event;
 use App\Models\Contact;
 use App\Models\Feedback;
 use App\Models\Schedule;
@@ -44,6 +45,11 @@ class Faculty extends Model
     public function announcements(): HasMany
     {
         return $this->hasMany(Announcement::class);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
     }
 
     /**

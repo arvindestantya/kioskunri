@@ -39,6 +39,7 @@
               hoverRating: 0,
               isStatsModalOpen: false,
               isAnnouncementModalOpen: false,
+              isEventModalOpen: false,
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -63,15 +64,29 @@
           </header>
           
           <div class="content">
-            <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah Lokasi Fakultas</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
-            <a href="#" class="card-link"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
-            <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+            @switch($faculty->slug)
+                @case('unit-penunjang-akademik-tik')
+                    <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Unit</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Unit</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Unit</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+                    @break
+                @default
+                    <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Fakultas</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+            @endswitch
           </div>
 
           <footer class="footer">
@@ -422,7 +437,7 @@
             <div class="form-modal-overlay z-50" x-show="isMapModalOpen" x-transition x-cloak>
                 <main class="form !max-w-6xl bg-gray-50" x-show="isMapModalOpen" x-transition>
                     <header class="headline border-b">
-                        <h1 class="frame"><span class="text-wrapper">Denah Lokasi {{ $faculty->name }}</span></h1>
+                        <h1 class="frame"><span class="text-wrapper">Denah {{ $faculty->name }}</span></h1>
                         <button class="close-button" @click="isMapModalOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
                     </header>
                     <div class="p-4 bg-gray-100">
@@ -430,7 +445,7 @@
                             
                             @foreach($faculty->maps as $index => $map)
                                 <div x-show="mapSliderIndex === {{ $index }}" class="duration-300" x-transition.opacity>
-                                    <img src="{{ asset('storage/' . $map->path) }}" alt="Denah Lokasi {{ $faculty->name }} #{{ $index + 1 }}" class="w-full h-auto rounded-lg shadow-md">
+                                    <img src="{{ asset('storage/' . $map->path) }}" alt="Denah {{ $faculty->name }} #{{ $index + 1 }}" class="w-full h-auto rounded-lg shadow-md">
                                 </div>
                             @endforeach
 
@@ -440,7 +455,13 @@
                             @endif
 
                         @else
-                            <p class="text-center text-gray-500 py-20">Denah lokasi untuk fakultas ini belum tersedia.</p>
+                            @switch($faculty->slug)
+                                @case('unit-penunjang-akademik-tik')
+                                    <p class="text-center text-gray-500 py-20">Denah untuk unit ini belum tersedia.</p>
+                                    @break
+                                @default
+                                    <p class="text-center text-gray-500 py-20">Denah untuk fakultas ini belum tersedia.</p>
+                            @endswitch
                         @endif
                     </div>
                 </main>
@@ -490,7 +511,13 @@
 
                 <main class="form !max-w-2xl bg-gray-50" x-show="isAnnouncementModalOpen" x-transition>
                     <header class="headline border-b">
-                        <h1 class="frame"><span class="text-wrapper">Pengumuman Fakultas</span></h1>
+                        @switch($faculty->slug)
+                                @case('unit-penunjang-akademik-tik')
+                                    <h1 class="frame"><span class="text-wrapper">Pengumuman Unit</span></h1>
+                                    @break
+                                @default
+                                    <h1 class="frame"><span class="text-wrapper">Pengumuman Fakultas</span></h1>
+                        @endswitch
                         <button class="close-button" aria-label="Tutup" @click="isAnnouncementModalOpen = false">
                             <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
                         </button>
@@ -511,6 +538,67 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-2.104 9.168-3.934" /></svg>
                                     <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak Ada Pengumuman</h3>
                                     <p class="mt-1 text-sm text-gray-500">Saat ini belum ada pengumuman baru.</p>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </main>
+            </div>
+
+            <div class="form-modal-overlay z-50"
+                x-show="isEventModalOpen"
+                x-transition x-cloak>
+
+                <main class="form !max-w-3xl bg-gray-50" x-show="isEventModalOpen" x-transition>
+                    <header class="headline border-b">
+                        @switch($faculty->slug)
+                            @case('unit-penunjang-akademik-tik')
+                                <h1 class="frame"><span class="text-wrapper">Kegiatan Unit</span></h1>
+                                @break
+                            @default
+                                <h1 class="frame"><span class="text-wrapper">Kegiatan Fakultas</span></h1>
+                        @endswitch
+                        <button class="close-button" aria-label="Tutup" @click="isEventModalOpen = false">
+                            <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                        </button>
+                    </header>
+
+                    <div class="p-6 sm:p-8">
+                        <ul class="space-y-6">
+                            @forelse ($events as $event)
+                                <li class="flex flex-col sm:flex-row items-start gap-4 pb-6 border-b border-gray-200 last:border-b-0">
+                                    <!-- Poster Kegiatan -->
+                                    @if($event->image_path)
+                                    <img src="{{ asset('storage/' . $event->image_path) }}" alt="{{ $event->title }}" class="w-full sm:w-48 h-auto rounded-lg object-cover">
+                                    @endif
+                                    
+                                    <!-- Detail Kegiatan -->
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-xl text-gray-800">{{ $event->title }}</h4>
+                                        <div class="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                                            <div class="flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                <span>{{ \Carbon\Carbon::parse($event->start_time)->format('d M Y, H:i') }}</span>
+                                            </div>
+                                            @if($event->location)
+                                            <div class="flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                                <span>{{ $event->location }}</span>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        @if($event->description)
+                                            <div class="prose prose-sm mt-2 text-gray-600">
+                                                {!! $event->description !!}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="text-center text-gray-500 py-16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak Ada Kegiatan</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Saat ini belum ada kegiatan yang akan datang.</p>
                                 </li>
                             @endforelse
                         </ul>

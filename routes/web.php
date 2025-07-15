@@ -3,6 +3,7 @@
 use App\Models\Faculty;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\FlyerController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KioskController;
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('admin/schedules', ScheduleController::class)->names('schedules');
     Route::resource('admin/maps', MapController::class)->names('maps');
     Route::resource('admin/announcements', AnnouncementController::class)->names('announcements');
+    Route::resource('admin/events', EventController::class)->names('events');
 });
 
 // Route khusus untuk Super Admin
