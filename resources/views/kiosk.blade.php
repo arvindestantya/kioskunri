@@ -90,7 +90,7 @@
           </div>
 
           <footer class="footer">
-            <div class="overlap-group"><div class="text-wrapper-4">Copyright @ Universitas Riau</div></div>
+            <div class="overlap-group"><div class="text-wrapper-4">Copyright @ UPA TIK Universitas Riau</div></div>
           </footer>
         </div>
 
