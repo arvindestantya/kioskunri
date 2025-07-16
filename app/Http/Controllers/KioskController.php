@@ -40,7 +40,7 @@ class KioskController extends Controller
             ->orderBy('start_time', 'asc')
             ->take(5)  
             ->get();
-
+        
         $todayVisitorCount = Guest::where('faculty_id', $faculty->id)->whereDate('created_at', today())->count();
         $weekVisitorCount = Guest::where('faculty_id', $faculty->id)->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
         $monthVisitorCount = Guest::where('faculty_id', $faculty->id)->whereMonth('created_at', now()->month)->count();

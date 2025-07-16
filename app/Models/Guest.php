@@ -11,9 +11,11 @@ class Guest extends Model
 
     protected $fillable = [
         'nama',
+        'no_identitas',
         'no_handphone',
         'email',
         'jenis_pengunjung',
+        'nama_fakultas',
         'perihal',
         'faculty_id',
     ];
