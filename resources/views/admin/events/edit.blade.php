@@ -58,8 +58,8 @@
 
                         <!-- Upload Poster -->
                         <div class="mt-4">
-                            <x-input-label for="image" :value="__('Ganti Poster (Opsional)')" />
-                            <input type="file" name="image" id="image" class="block w-full mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                            <x-input-label for="image_path" :value="__('Ganti Poster (Opsional)')" />
+                            <input type="file" name="image_path" id="image_path" class="block w-full mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                             @if($event->image_path)
                             <div class="mt-2"><img src="{{ asset('storage/' . $event->image_path) }}" class="h-24 w-auto rounded"></div>
                             @endif

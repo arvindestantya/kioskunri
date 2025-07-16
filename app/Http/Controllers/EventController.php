@@ -84,9 +84,16 @@ class EventController extends Controller
         $event->start_time = $request->start_time;
         $event->end_time = $request->end_time;
 
-        if ($request->hasFile('image_path')) {
-            Storage::disk('public')->delete($event->path);
-            $event->path = $request->file('image_path')->store('events', 'public');
+        if ($request->hasFile('image')) {
+
+            // 1. PERIKSA APAKAH ADA GAMBAR LAMA SEBELUM MENGHAPUS
+            // Ganti 'image_path' dengan nama kolom di database Anda ('path' atau 'image_path')
+            if ($event->image_path) {
+                Storage::disk('public')->delete($event->image_path);
+            }
+
+            // 2. Simpan gambar baru
+            $event->image_path = $request->file('image')->store('events', 'public');
         }
 
         $event->save();

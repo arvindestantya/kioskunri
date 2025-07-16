@@ -20,6 +20,11 @@ class Event extends Model
         'faculty_id',
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time'   => 'datetime',
+    ];
+
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
