@@ -18,7 +18,7 @@ public function up(): void
         $table->string('no_handphone');
         $table->string('email');
         $table->string('jenis_pengunjung');
-        $table->text('perihal');
+        $table->text('perihal')->nullable();
         $table->timestamps(); // otomatis membuat kolom created_at dan updated_at
     });
 }

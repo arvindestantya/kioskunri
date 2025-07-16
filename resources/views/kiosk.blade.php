@@ -40,6 +40,7 @@
               isStatsModalOpen: false,
               isAnnouncementModalOpen: false,
               isEventModalOpen: false,
+              jenisPengunjung: null,
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -128,11 +129,11 @@
                       <button class="close-button" aria-label="Tutup formulir" @click="isFormOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
                   </header>
                   <form class="input-field" 
+                        x-data="{ jenisLayananDipilih: '' }"
                         @submit.prevent="
                             const formElement = $el;
                             const formData = new FormData(formElement);
                             
-                            // INI ADALAH BAGIAN YANG DIPERBAIKI
                             fetch(`/api/faculties/${$data.facultyId}/guests`, {
                                 method: 'POST',
                                 body: formData,
@@ -141,6 +142,7 @@
                             .then(response => {
                                 if (response.ok) {
                                     formElement.reset();
+                                    jenisPengunjung = null; // Reset state setelah submit
                                     isFormOpen = false;
                                     isSuccessOpen = true;
                                     setTimeout(() => { isSuccessOpen = false }, 3000);
@@ -158,39 +160,83 @@
                                 alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
                             });
                         ">
-                      <div class="input"><label for="nama" class="form-label">Nama</label><div class="field"><input id="nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[\p{L}\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/></div></div>
-                      <div class="input"><label for="handphone" class="form-label">No. Handphone</label><div class="field"><input id="handphone" name="no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/></div></div>
-                      <div class="input"><label for="email" class="form-label">Email</label><div class="field"><input id="email" name="email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" /></div></div>
-                      <div class="input">
-                        <label class="form-label">Jenis Pengunjung</label>
-
-                        <div class="field flex items-center gap-x-6 py-2">
-                            
-                            <div class="flex items-center">
-                                <input type="radio" id="jenis-mahasiswa" name="jenis_pengunjung" value="mahasiswa" class="radio-input" required>
-                                <label for="jenis-mahasiswa" class="radio-label ml-2">Mahasiswa</label>
+                        <div class="input"><label for="nama" class="form-label">Nama</label><div class="field"><input id="nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[\p{L}\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/></div></div>
+                        <div class="input"><label for="handphone" class="form-label">No. Handphone</label><div class="field"><input id="handphone" name="no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/></div></div>
+                        <div class="input"><label for="email" class="form-label">Email</label><div class="field"><input id="email" name="email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" /></div></div>
+                        
+                        <div class="input">
+                            <label class="form-label">Jenis Pengunjung</label>
+                            <div class="field flex items-center gap-x-6 py-2">
+                                <div class="flex items-center">
+                                    <input x-model="jenisPengunjung" type="radio" id="jenis-mahasiswa" name="jenis_pengunjung" value="mahasiswa" class="radio-input" required>
+                                    <label for="jenis-mahasiswa" class="radio-label ml-2">Mahasiswa</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input x-model="jenisPengunjung" type="radio" id="jenis-dosen" name="jenis_pengunjung" value="dosen" class="radio-input" required>
+                                    <label for="jenis-dosen" class="radio-label ml-2">Dosen</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input x-model="jenisPengunjung" type="radio" id="jenis-tendik" name="jenis_pengunjung" value="tendik" class="radio-input" required>
+                                    <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input x-model="jenisPengunjung" type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
+                                    <label for="jenis-umum" class="radio-label ml-2">Umum</label>
+                                </div>
                             </div>
-
-                            <div class="flex items-center">
-                                <input type="radio" id="jenis-dosen" name="jenis_pengunjung" value="dosen" class="radio-input" required>
-                                <label for="jenis-dosen" class="radio-label ml-2">Dosen</label>
-                            </div>
-
-                            <div class="flex items-center">
-                                <input type="radio" id="jenis-tendik" name="jenis_pengunjung" value="tendik" class="radio-input" required>
-                                <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
-                            </div>
-
-                            <div class="flex items-center">
-                                <input type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
-                                <label for="jenis-umum" class="radio-label ml-2">Umum</label>
-                            </div>
-
                         </div>
-                      </div>
-                      <div class="input"><label for="perihal" class="form-label">Perihal</label><div class="field-2"><textarea id="perihal" name="perihal" class="content text-wrapper-2" placeholder="Ketik perihal kunjungan kamu" required autocomplete="off"></textarea></div></div>
-                      <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
-                  </form>
+
+                        <template x-if="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)">
+                            <div x-transition>
+                                <div class="input">
+                                    <label for="no_identitas" class="form-label" x-text="jenisPengunjung === 'mahasiswa' ? 'NIM' : jenisPengunjung === 'dosen' ? 'NUPTK' : 'NIP'"></label>
+                                    <div class="field">
+                                        <input id="no_identitas" name="no_identitas" class="content text-wrapper-2" type="text"
+                                            :placeholder="jenisPengunjung === 'mahasiswa' ? 'Ketik NIM kamu' : jenisPengunjung === 'dosen' ? 'Ketik NUPTK kamu' : 'Ketik NIP kamu'"
+                                            :required="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
+                                    </div>
+                                </div>
+                                <div class="input">
+                                    <label for="nama_fakultas" class="form-label">Fakultas</label>
+                                    <div class="field">
+                                        <input id="nama_fakultas" name="nama_fakultas" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
+                                            :required="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="input">
+                            <label for="jenis_layanan" class="form-label">Jenis Layanan</label>
+                            <div class="field">
+                                <select id="jenis_layanan" name="jenis_layanan" class="content text-wrapper-2"
+                                        @change="jenisLayananDipilih = $event.target.value">
+                                    
+                                    <option value="" disabled selected>Pilih Layanan...</option>
+
+                                    @forelse ($services as $service)
+                                        <option value="{{ $service->nama_layanan }}">{{ $service->nama_layanan }}</option>
+                                    @empty
+                                        @endforelse
+                                    <option value="Lainnya">Lainnya (Isi Manual)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="input">
+                            <label for="perihal" class="form-label">Perihal</label>
+                            <div class="field-2">
+                                <textarea id="perihal" 
+                                        name="perihal" 
+                                        class="content text-wrapper-2" 
+                                        placeholder="Ketik perihal kunjungan kamu" 
+                                        autocomplete="off"
+                                        :required="jenisLayananDipilih === 'Lainnya'">
+                                </textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
+                    </form>
               </main>
           </div>
 

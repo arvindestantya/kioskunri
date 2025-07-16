@@ -36,7 +36,7 @@
                                 
                                 <x-slot name="trigger">
                                     <button class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none 
-                                        @if (request()->routeIs('flyers.index', 'contacts.index', 'schedules.index', 'maps.index', 'announcements.index', 'events.index'))
+                                        @if (request()->routeIs('flyers.index', 'contacts.index', 'schedules.index', 'maps.index', 'announcements.index', 'events.index', 'services.index'))
                                             border-indigo-400 text-gray-900 focus:border-indigo-700
                                         @else
                                             border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300
@@ -70,6 +70,9 @@
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('events.index')">
                                         {{ __('Manajemen Kegiatan') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('services.index')">
+                                        {{ __('Manajemen Layanan') }}
                                     </x-dropdown-link>
                                     </x-slot>
                                 
@@ -168,6 +171,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
                     {{ __('Manajemen Kegiatan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('services.index')" :active="request()->routeIs('services.index')">
+                    {{ __('Manajemen Layanan') }}
                 </x-responsive-nav-link>
                 @endhasrole
             

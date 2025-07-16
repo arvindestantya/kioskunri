@@ -10,6 +10,7 @@ use App\Http\Controllers\KioskController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AnnouncementController;
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('admin/maps', MapController::class)->names('maps');
     Route::resource('admin/announcements', AnnouncementController::class)->names('announcements');
     Route::resource('admin/events', EventController::class)->names('events');
+    Route::resource('admin/services', ServiceController::class)->names('services');
 });
 
 // Route khusus untuk Super Admin

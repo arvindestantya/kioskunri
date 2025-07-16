@@ -17,10 +17,25 @@ class GuestController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
+            'no_identitas' => [
+                'nullable', // Izinkan NULL
+                'string',
+                // Wajib diisi HANYA JIKA jenis_pengunjung adalah salah satu dari ini
+                'required_if:jenis_pengunjung,mahasiswa,dosen,tendik',
+                // Unik, tapi abaikan nilai NULL
+                'unique:guests,no_identitas,NULL,id' 
+            ],
             'no_handphone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'jenis_pengunjung' => 'required|string|in:mahasiswa,dosen,tendik,umum',
-            'perihal' => 'required|string',
+            'nama_fakultas' => 'nullable|string|max:255',
+            'jenis_layanan' => 'nullable|string|max:255',
+            'perihal' => [
+                'nullable',
+                'string',
+                'required_without:jenis_layanan',
+                'required_if:jenis_layanan,Lainnya', 
+            ],
         ]);
 
         if ($validator->fails()) {

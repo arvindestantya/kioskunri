@@ -15,6 +15,7 @@ class KioskController extends Controller
     {
         $flyers = $faculty->flyers()->latest()->get();
         $contacts = $faculty->contacts()->latest()->get();
+        $services = $faculty->services()->latest()->get();
         $schedules = Schedule::where(function ($query) use ($faculty) {
                 $query->where('faculty_id', $faculty->id)
                       ->orWhereNull('faculty_id');
@@ -53,6 +54,6 @@ class KioskController extends Controller
         $visitorTypeLabels = $visitorTypeCounts->pluck('jenis_pengunjung')->map(fn($val) => ucfirst($val));
         $visitorTypeData = $visitorTypeCounts->pluck('total');
         
-        return view('kiosk', compact('faculty', 'flyers', 'contacts', 'schedules', 'announcements','todayVisitorCount','weekVisitorCount', 'monthVisitorCount', 'visitorTypeLabels', 'visitorTypeData', 'events'));
+        return view('kiosk', compact('faculty', 'flyers', 'contacts', 'schedules', 'announcements','todayVisitorCount','weekVisitorCount', 'monthVisitorCount', 'visitorTypeLabels', 'visitorTypeData', 'events', 'services'));
     }
 }
