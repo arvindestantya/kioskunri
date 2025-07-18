@@ -21,7 +21,7 @@
                     <div class="flex justify-between items-center mb-4">
                         <div class="w-full max-w-md">
                             <form action="{{ route('guests') }}" method="GET" class="flex">
-                                <input type="text" name="search" placeholder="Cari nama, email, perihal..." value="{{ request('search') }}"
+                                <input type="text" name="search" placeholder="Cari nama, nim/nuptk/nip, fakultas, email, jenis layanan, perihal..." value="{{ request('search') }}"
                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-l-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                                 <button type="submit" class="px-4 py-2 font-semibold rounded-r-md bg-indigo-600 text-white hover:bg-indigo-700">Cari</button>
                             </form>
@@ -37,8 +37,7 @@
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">NIP/NIM</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Asal Fakultas</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">NIP/NIM/NUPTK<br>Asal Fakultas</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kontak</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis Layanan</th>
@@ -49,16 +48,18 @@
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($guests as $guest)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $guest->nama }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $guest->no_identitas }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $guest->nama_fakultas }}</td>
+                                        <td class="px-6 py-4 whitespace-normal text-gray-900 dark:text-gray-200">{{ $guest->nama }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900 dark:text-gray-200">{{ $guest->no_identitas }}</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $guest->nama_fakultas }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 w-48 whitespace-normal break-all">
                                             <div class="text-gray-900 dark:text-gray-200">{{ $guest->no_handphone }}</div>
                                             <div class="text-sm text-gray-500 dark:text-gray-400">{{ $guest->email }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ ucfirst($guest->jenis_pengunjung) }}</td>
                                         <td class="px-6 py-4 whitespace-normal max-w-xs text-gray-900 dark:text-gray-200">{{ $guest->jenis_layanan }}</td>
-                                        <td class="px-6 py-4 whitespace-normal max-w-xs text-gray-900 dark:text-gray-200">{{ $guest->perihal }}</td>
+                                        <td class="px-6 py-4 whitespace-normal text-gray-900 dark:text-gray-200">{{ $guest->perihal }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->created_at->format('d M Y, H:i') }}</td>
                                     </tr>
                                 @empty

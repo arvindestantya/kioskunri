@@ -16,7 +16,7 @@ class Event extends Model
         'location',
         'start_time',
         'end_time',
-        'image_path',
+        'path',
         'faculty_id',
     ];
 

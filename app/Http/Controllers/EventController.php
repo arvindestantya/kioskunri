@@ -16,13 +16,14 @@ class EventController extends Controller
         $query = Event::query()->with('faculty');
 
         if (!$user->hasRole('Super Admin')) {
-            $query->where('faculty_id', $user->faculty_id)
+            $query->where(function ($q) use ($user) {
+                $q->where('faculty_id', $user->faculty_id)
                   ->orWhereNull('faculty_id');
+            });
         }
 
         $events = $query->latest('start_time')->get();
-
-        return view('admin.events.index', compact('events'));        
+        return view('admin.events.index', compact('events'));
     }
 
     public function create()
@@ -33,30 +34,29 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'faculty_id' => 'required|exists:faculties,id',
+        $validated = $request->validate([
+            'faculty_id' => 'nullable|exists:faculties,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
             'start_time' => 'required|date',
-            'end_time' => 'nullable|date|after_or_equal:start_date',
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'end_time' => 'nullable|date|after_or_equal:start_time',
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $path = null;
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('events', 'public');
+        $imagePath = null;
+        if ($request->hasFile('event_image')) {
+            $imagePath = $request->file('event_image')->store('events', 'public');
         }
 
         Event::create([
-            'faculty_id' => $request->faculty_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'image_path' => $path,
+            'faculty_id' => $validated['faculty_id'],
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'start_time' => $validated['start_time'],
+            'end_time' => $validated['end_time'],
+            'path' => $imagePath, // KONSISTENSI: Menggunakan 'path' sesuai database
         ]);
 
         return redirect()->route('events.index')->with('success', 'Kegiatan baru berhasil diunggah.');
@@ -64,38 +64,33 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        return view('admin.events.edit', compact('event'));
+        $faculties = Faculty::orderBy('name')->get();
+        return view('admin.events.edit', compact('event', 'faculties'));
     }
 
     public function update(Request $request, Event $event)
     {
         $request->validate([
+            'faculty_id' => 'nullable|exists:faculties,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
             'start_time' => 'required|date',
-            'end_time' => 'nullable|date|after_or_equal:start_date',
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'end_time' => 'nullable|date|after_or_equal:start_time',
+            'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $event->title = $request->title;
-        $event->description = $request->description;
-        $event->location = $request->location;
-        $event->start_time = $request->start_time;
-        $event->end_time = $request->end_time;
+        $event->update($request->except('event_image'));
 
-        if ($request->hasFile('image')) {
-
-            // 1. PERIKSA APAKAH ADA GAMBAR LAMA SEBELUM MENGHAPUS
-            // Ganti 'image_path' dengan nama kolom di database Anda ('path' atau 'image_path')
-            if ($event->image_path) {
-                Storage::disk('public')->delete($event->image_path);
+        if ($request->hasFile('event_image')) {
+            // KONSISTENSI: Menggunakan properti 'path'
+            if ($event->path) {
+                Storage::disk('public')->delete($event->path);
             }
-
-            // 2. Simpan gambar baru
-            $event->image_path = $request->file('image')->store('events', 'public');
+            // KONSISTENSI: Menyimpan ke properti 'path'
+            $event->path = $request->file('event_image')->store('events', 'public');
         }
-
+        
         $event->save();
 
         return redirect()->route('events.index')->with('success', 'Kegiatan berhasil diperbarui.');
@@ -103,9 +98,12 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        Storage::disk('public')->delete($event->path);
-        $event->delete();
+        // KONSISTENSI: Menggunakan properti 'path'
+        if ($event->path) {
+            Storage::disk('public')->delete($event->path);
+        }
 
+        $event->delete();
         return redirect()->route('events.index')->with('success', 'Kegiatan berhasil dihapus.');
     }
 }

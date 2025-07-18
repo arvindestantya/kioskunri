@@ -75,7 +75,7 @@
                     <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
-                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/icon-survey.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
                     @break
                 @default
                     <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
@@ -86,7 +86,7 @@
                     <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
-                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/icon-survey.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
             @endswitch
           </div>
 
@@ -122,7 +122,7 @@
               </div>
           </div>
 
-          <div class="form-modal-overlay" x-show="isFormOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
+        <div class="form-modal-overlay" x-show="isFormOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
               <main class="form" x-show="isFormOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
                   <header class="headline">
                       <h1 class="frame"><span class="text-wrapper">Selamat Datang di {{ $faculty->name }}</span></h1>
@@ -141,11 +141,10 @@
                             })
                             .then(response => {
                                 if (response.ok) {
-                                    formElement.reset();
-                                    jenisPengunjung = null; // Reset state setelah submit
-                                    isFormOpen = false;
                                     isSuccessOpen = true;
-                                    setTimeout(() => { isSuccessOpen = false }, 3000);
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000); 
                                 } else {
                                     response.json().then(data => {
                                         console.error('Validation errors:', data.errors);
@@ -191,7 +190,7 @@
                                 <div class="input">
                                     <label for="no_identitas" class="form-label" x-text="jenisPengunjung === 'mahasiswa' ? 'NIM' : jenisPengunjung === 'dosen' ? 'NUPTK' : 'NIP'"></label>
                                     <div class="field">
-                                        <input id="no_identitas" name="no_identitas" class="content text-wrapper-2" type="text"
+                                        <input id="no_identitas" name="no_identitas" class="content text-wrapper-2" type="tel"
                                             :placeholder="jenisPengunjung === 'mahasiswa' ? 'Ketik NIM kamu' : jenisPengunjung === 'dosen' ? 'Ketik NUPTK kamu' : 'Ketik NIP kamu'"
                                             :required="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
                                     </div>
@@ -231,8 +230,7 @@
                                         class="content text-wrapper-2" 
                                         placeholder="Ketik perihal kunjungan kamu" 
                                         autocomplete="off"
-                                        :required="jenisLayananDipilih === 'Lainnya'">
-                                </textarea>
+                                        :required="jenisLayananDipilih === 'Lainnya'"></textarea>
                             </div>
                         </div>
                         <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
@@ -614,8 +612,8 @@
                             @forelse ($events as $event)
                                 <li class="flex flex-col sm:flex-row items-start gap-4 pb-6 border-b border-gray-200 last:border-b-0">
                                     <!-- Poster Kegiatan -->
-                                    @if($event->image_path)
-                                    <img src="{{ asset('storage/' . $event->image_path) }}" alt="{{ $event->title }}" class="w-full sm:w-48 h-auto rounded-lg object-cover">
+                                    @if($event->path)
+                                    <img src="{{ asset('storage/' . $event->path) }}" alt="{{ $event->title }}" class="w-full sm:w-48 h-auto rounded-lg object-cover">
                                     @endif
                                     
                                     <!-- Detail Kegiatan -->

@@ -29,7 +29,7 @@ class GuestController extends Controller
             'email' => 'required|email|max:255',
             'jenis_pengunjung' => 'required|string|in:mahasiswa,dosen,tendik,umum',
             'nama_fakultas' => 'nullable|string|max:255',
-            'jenis_layanan' => 'nullable|string|max:255',
+            'jenis_layanan' => 'required|string|max:255',
             'perihal' => [
                 'nullable',
                 'string',
@@ -69,6 +69,9 @@ class GuestController extends Controller
                       ->orWhere('email', 'like', "%{$search}%")
                       ->orWhere('no_handphone', 'like', "%{$search}%")
                       ->orWhere('jenis_pengunjung', 'like', "%{$search}%")
+                      ->orWhere('no_identitas', 'like', "%{$search}%")
+                      ->orWhere('nama_fakultas', 'like', "%{$search}%")
+                      ->orWhere('jenis_layanan', 'like', "%{$search}%")
                       ->orWhere('perihal', 'like', "%{$search}%");
             });
         }

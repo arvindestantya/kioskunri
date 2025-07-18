@@ -38,8 +38,8 @@
                                 @forelse ($events as $event)
                                     <tr>
                                         <td class="px-6 py-4">
-                                            @if($event->image_path)
-                                                <img src="{{ asset('storage/' . $event->image_path) }}" alt="Poster" class="h-20 w-auto rounded-md">
+                                            @if($event->path)
+                                                <img src="{{ asset('storage/' . $event->path) }}" alt="Poster" class="h-20 w-auto rounded-md">
                                             @else
                                                 <span class="text-xs text-gray-400">Tidak ada</span>
                                             @endif
