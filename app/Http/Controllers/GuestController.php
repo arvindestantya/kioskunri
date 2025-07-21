@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Guest;
 use App\Models\Faculty;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Exports\GuestsExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class GuestController extends Controller
 {
@@ -18,12 +19,11 @@ class GuestController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
             'no_identitas' => [
-                'nullable', // Izinkan NULL
+                'nullable',
                 'string',
-                // Wajib diisi HANYA JIKA jenis_pengunjung adalah salah satu dari ini
                 'required_if:jenis_pengunjung,mahasiswa,dosen,tendik',
                 // Unik, tapi abaikan nilai NULL
-                'unique:guests,no_identitas,NULL,id' 
+                // 'unique:guests,no_identitas,NULL,id' 
             ],
             'no_handphone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
@@ -75,6 +75,20 @@ class GuestController extends Controller
                       ->orWhere('perihal', 'like', "%{$search}%");
             });
         }
+
+        $guestsQuery->when($request->filled('start_date'), function ($q) use ($request) {
+            $startDate = Carbon::parse($request->input('start_date'))->startOfDay();
+            return $q->where('created_at', '>=', $startDate);
+        });
+
+        $guestsQuery->when($request->filled('end_date'), function ($q) use ($request) {
+            $endDate = Carbon::parse($request->input('end_date'))->endOfDay();
+            return $q->where('created_at', '<=', $endDate);
+        });
+        
+        $guestsQuery->when($request->filled('jenis_pengunjung'), function ($q) use ($request) {
+            return $q->where('jenis_pengunjung', $request->input('jenis_pengunjung'));
+        });
 
         $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
 
