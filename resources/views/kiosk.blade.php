@@ -665,7 +665,6 @@
                 isGuestDataLocked: false,
 
                 async searchGuest() {
-                    // ... (logika ini tidak berubah)
                     const noIdentitas = this.formData.no_identitas;
                     if (!noIdentitas) {
                         this.resetGuestData(false);
@@ -691,11 +690,9 @@
                     }
                 },
 
-                // Di dalam method submitForm()
                 submitForm() {
                     const facultyId = '{{ $faculty->id }}';
 
-                    // ✅ PERBAIKAN: Buat objek FormData secara manual dari state Alpine.js
                     const dataToSend = new FormData();
                     for (const key in this.formData) {
                         dataToSend.append(key, this.formData[key]);
@@ -703,17 +700,14 @@
 
                     fetch(`/api/faculties/${facultyId}/guests`, {
                         method: 'POST',
-                        // Kirim data yang sudah kita siapkan, bukan dari elemen form
                         body: dataToSend,
                         headers: { 
                             'Accept': 'application/json',
-                            // Tambahkan header CSRF token jika menggunakan session
-                            // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
                     })
                     .then(response => {
                         if (response.ok) {
-                            isSuccessOpen = true; 
+                            this.isSuccessOpen = true; 
                             setTimeout(() => location.reload(), 1000);
                         } else {
                             response.json().then(data => {
@@ -729,7 +723,6 @@
                 },
                 
                 resetGuestData(resetNoIdentitas = true) {
-                    // ... (logika ini tidak berubah)
                     if (resetNoIdentitas) {
                         this.formData.no_identitas = '';
                     }
@@ -741,7 +734,6 @@
                 },
                 
                 resetForm() {
-                    // ... (logika ini tidak berubah)
                     this.resetGuestData(); 
                     this.formData.jenis_pengunjung = '';
                     this.formData.jenis_layanan = '';
