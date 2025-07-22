@@ -27,9 +27,9 @@ return new class extends Migration
         $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
     });
     
-    Schema::table('surveys', function (Blueprint $table) {
-        $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
-    });
+    // Schema::table('surveys', function (Blueprint $table) {
+    //     $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
+    // });
 }
 // (Anda juga perlu membuat method down() untuk membatalkan perubahan ini)
 

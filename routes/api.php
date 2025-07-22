@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/faculties/{faculty}/guests', [GuestController::class, 'store']);
 Route::post('/faculties/{faculty}/feedbacks', [FeedbackController::class, 'store']);
 Route::post('/faculties/{faculty}/surveys', [SurveyController::class, 'store']);
+Route::get('/guests/search/{no_identitas}', [GuestController::class, 'searchByNoIdentitas']);
+
 // Route::get('/faculties/{faculty}/flyers', function (Faculty $faculty) {
 //     return response()->json([
 //         'flyers' => $faculty->flyers()->latest()->get()->pluck('path')

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('guests', function (Blueprint $table) {
             // Menambahkan kolom no_identitas setelah kolom 'id'
-            $table->string('no_identitas')->unique()->nullable()->after('id');
+            $table->string('no_identitas')->nullable()->after('id');
 
             // Menambahkan kolom nama_fakultas setelah kolom 'jenis_pengunjung'
             // Dibuat nullable() artinya boleh kosong, cocok untuk tamu 'umum'

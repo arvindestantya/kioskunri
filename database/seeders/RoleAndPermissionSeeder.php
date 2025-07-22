@@ -27,13 +27,13 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Buat contoh fakultas dan adminnya
         $faculty = Faculty::create([
-            'name' => 'Fakultas Ekonomi dan Bisnis',
-            'slug' => 'feb'
+            'name' => 'Unit Penunjang Akademik TIK',
+            'slug' => 'upa-tik'
         ]);
 
         $facultyAdminUser = User::create([
-            'name' => 'Admin FEB',
-            'email' => 'adminfeb@kiosk.com',
+            'name' => 'Admin UPA TIK',
+            'email' => 'admintik@kiosk.com',
             'password' => bcrypt('password'), // Ganti dengan password yang aman!
             'faculty_id' => $faculty->id,
         ]);

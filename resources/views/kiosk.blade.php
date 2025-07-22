@@ -123,120 +123,107 @@
           </div>
 
         <div class="form-modal-overlay" x-show="isFormOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
-              <main class="form" x-show="isFormOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
-                  <header class="headline">
-                      <h1 class="frame"><span class="text-wrapper">Selamat Datang di {{ $faculty->name }}</span></h1>
-                      <button class="close-button" aria-label="Tutup formulir" @click="isFormOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
-                  </header>
-                  <form class="input-field" 
-                        x-data="{ jenisLayananDipilih: '' }"
-                        @submit.prevent="
-                            const formElement = $el;
-                            const formData = new FormData(formElement);
-                            
-                            fetch(`/api/faculties/${$data.facultyId}/guests`, {
-                                method: 'POST',
-                                body: formData,
-                                headers: { 'Accept': 'application/json' }
-                            })
-                            .then(response => {
-                                if (response.ok) {
-                                    isSuccessOpen = true;
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 1000); 
-                                } else {
-                                    response.json().then(data => {
-                                        console.error('Validation errors:', data.errors);
-                                        let errorMessages = 'Gagal menyimpan data:\n';
-                                        for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
-                                        alert(errorMessages);
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Network Error:', error);
-                                alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
-                            });
-                        ">
-                        <div class="input"><label for="nama" class="form-label">Nama</label><div class="field"><input id="nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[\p{L}\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/></div></div>
-                        <div class="input"><label for="handphone" class="form-label">No. Handphone</label><div class="field"><input id="handphone" name="no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/></div></div>
-                        <div class="input"><label for="email" class="form-label">Email</label><div class="field"><input id="email" name="email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" /></div></div>
-                        
-                        <div class="input">
-                            <label class="form-label">Jenis Pengunjung</label>
-                            <div class="field flex items-center gap-x-6 py-2">
-                                <div class="flex items-center">
-                                    <input x-model="jenisPengunjung" type="radio" id="jenis-mahasiswa" name="jenis_pengunjung" value="mahasiswa" class="radio-input" required>
-                                    <label for="jenis-mahasiswa" class="radio-label ml-2">Mahasiswa</label>
+    
+            <main class="form" x-data="guestForm()" x-show="isFormOpen" 
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" 
+                x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
+                
+                <header class="headline">
+                    <h1 class="frame"><span class="text-wrapper">Selamat Datang di {{ $faculty->name }}</span></h1>
+                    <button class="close-button" aria-label="Tutup formulir" @click="isFormOpen = false; resetForm()"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
+                </header>
+
+                <form class="input-field" @submit.prevent="submitForm">
+                    
+                    <div class="input">
+                        <label class="form-label">Jenis Pengunjung</label>
+                        <div class="field flex items-center gap-x-6 py-2">
+                            <div class="flex items-center">
+                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-mahasiswa" name="jenis_pengunjung" value="mahasiswa" class="radio-input" required>
+                                <label for="jenis-mahasiswa" class="radio-label ml-2">Mahasiswa</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-dosen" name="jenis_pengunjung" value="dosen" class="radio-input" required>
+                                <label for="jenis-dosen" class="radio-label ml-2">Dosen</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-tendik" name="jenis_pengunjung" value="tendik" class="radio-input" required>
+                                <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
+                                <label for="jenis-umum" class="radio-label ml-2">Umum</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template x-if="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)">
+                        <div x-transition>
+                            <div class="input">
+                                <label for="no_identitas" class="form-label" x-text="formData.jenis_pengunjung === 'mahasiswa' ? 'NIM' : formData.jenis_pengunjung === 'dosen' ? 'NUPTK' : 'NIP'"></label>
+                                <div class="field">
+                                    <input id="no_identitas" name="no_identitas" x-model="formData.no_identitas" @blur="searchGuest" class="content text-wrapper-2" type="tel"
+                                        :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : formData.jenis_pengunjung === 'dosen' ? 'Ketik NUPTK lalu keluar dari kolom ini' : 'Ketik NIP lalu keluar dari kolom ini'"
+                                        :required="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
                                 </div>
-                                <div class="flex items-center">
-                                    <input x-model="jenisPengunjung" type="radio" id="jenis-dosen" name="jenis_pengunjung" value="dosen" class="radio-input" required>
-                                    <label for="jenis-dosen" class="radio-label ml-2">Dosen</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input x-model="jenisPengunjung" type="radio" id="jenis-tendik" name="jenis_pengunjung" value="tendik" class="radio-input" required>
-                                    <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input x-model="jenisPengunjung" type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
-                                    <label for="jenis-umum" class="radio-label ml-2">Umum</label>
+                            </div>
+                            <div class="input">
+                                <label for="nama_fakultas" class="form-label">Fakultas</label>
+                                <div class="field">
+                                    <input id="nama_fakultas" name="nama_fakultas" x-model="formData.nama_fakultas" :disabled="isGuestDataLocked" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
+                                        :required="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)" autocomplete="off">
                                 </div>
                             </div>
                         </div>
+                    </template>
 
-                        <template x-if="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)">
-                            <div x-transition>
-                                <div class="input">
-                                    <label for="no_identitas" class="form-label" x-text="jenisPengunjung === 'mahasiswa' ? 'NIM' : jenisPengunjung === 'dosen' ? 'NUPTK' : 'NIP'"></label>
-                                    <div class="field">
-                                        <input id="no_identitas" name="no_identitas" class="content text-wrapper-2" type="tel"
-                                            :placeholder="jenisPengunjung === 'mahasiswa' ? 'Ketik NIM kamu' : jenisPengunjung === 'dosen' ? 'Ketik NUPTK kamu' : 'Ketik NIP kamu'"
-                                            :required="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
-                                    </div>
-                                </div>
-                                <div class="input">
-                                    <label for="nama_fakultas" class="form-label">Fakultas</label>
-                                    <div class="field">
-                                        <input id="nama_fakultas" name="nama_fakultas" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
-                                            :required="['mahasiswa', 'dosen', 'tendik'].includes(jenisPengunjung)" autocomplete="off">
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-
-                        <div class="input">
-                            <label for="jenis_layanan" class="form-label">Jenis Layanan</label>
-                            <div class="field">
-                                <select id="jenis_layanan" name="jenis_layanan" class="content text-wrapper-2"
-                                        @change="jenisLayananDipilih = $event.target.value">
-                                    
-                                    <option value="" disabled selected>Pilih Layanan...</option>
-
-                                    @forelse ($services as $service)
-                                        <option value="{{ $service->nama_layanan }}">{{ $service->nama_layanan }}</option>
-                                    @empty
-                                        @endforelse
-                                    <option value="Lainnya">Lainnya (Isi Manual)</option>
-                                </select>
-                            </div>
+                    <div class="input">
+                        <label for="nama" class="form-label">Nama</label>
+                        <div class="field">
+                            <input id="nama" name="nama" x-model="formData.nama" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[\p{L}\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/>
                         </div>
-                        
-                        <div class="input">
-                            <label for="perihal" class="form-label">Perihal</label>
-                            <div class="field-2">
-                                <textarea id="perihal" 
-                                        name="perihal" 
-                                        class="content text-wrapper-2" 
-                                        placeholder="Ketik perihal kunjungan kamu" 
-                                        autocomplete="off"
-                                        :required="jenisLayananDipilih === 'Lainnya'"></textarea>
-                            </div>
+                    </div>
+                    <div class="input">
+                        <label for="handphone" class="form-label">No. Handphone</label>
+                        <div class="field">
+                            <input id="handphone" name="no_handphone" x-model="formData.no_handphone" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/>
                         </div>
-                        <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
-                    </form>
-              </main>
-          </div>
+                    </div>
+                    <div class="input">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="field">
+                            <input id="email" name="email" x-model="formData.email" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" />
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <label for="jenis_layanan" class="form-label">Jenis Layanan</label>
+                        <div class="field">
+                            <select id="jenis_layanan" name="jenis_layanan" x-model="formData.jenis_layanan" class="content text-wrapper-2" required :disabled="!formData.jenis_pengunjung">
+                                <option value="" disabled>Pilih Layanan...</option>
+                                @forelse ($services as $service)
+                                    <option value="{{ $service->nama_layanan }}">{{ $service->nama_layanan }}</option>
+                                @empty
+                                @endforelse
+                                <option value="Lainnya">Lainnya (Isi Manual)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input">
+                        <label for="perihal" class="form-label">Perihal</label>
+                        <div class="field-2">
+                            <textarea id="perihal" name="perihal" x-model="formData.perihal" class="content text-wrapper-2" 
+                                    placeholder="Ketik perihal kunjungan kamu" autocomplete="off"
+                                    :required="formData.jenis_layanan === 'Lainnya'"
+                                    :disabled="!formData.jenis_pengunjung"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="button"><div class="containt"><span class="label">Simpan</span></div></button>
+                </form>
+            </main>
+        </div>
 
           <div class="form-modal-overlay" x-show="isFeedbackOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
             <main class="form" x-show="isFeedbackOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
@@ -662,6 +649,107 @@
         </div>
       </div>
     </div>
+    <script>
+        function guestForm() {
+            return {
+                formData: {
+                    nama: '',
+                    no_handphone: '',
+                    email: '',
+                    jenis_pengunjung: '',
+                    no_identitas: '',
+                    nama_fakultas: '',
+                    jenis_layanan: '',
+                    perihal: ''
+                },
+                isGuestDataLocked: false,
+
+                async searchGuest() {
+                    // ... (logika ini tidak berubah)
+                    const noIdentitas = this.formData.no_identitas;
+                    if (!noIdentitas) {
+                        this.resetGuestData(false);
+                        return;
+                    };
+                    try {
+                        const response = await fetch(`/api/guests/search/${noIdentitas}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.formData.nama = data.nama;
+                            this.formData.no_handphone = data.no_handphone;
+                            this.formData.email = data.email;
+                            this.formData.nama_fakultas = data.nama_fakultas;
+                            if(this.formData.jenis_pengunjung != data.jenis_pengunjung) {
+                                this.formData.jenis_pengunjung = data.jenis_pengunjung;
+                            }
+                            this.isGuestDataLocked = true;
+                        } else {
+                            this.resetGuestData(false);
+                        }
+                    } catch (error) {
+                        this.resetGuestData(false);
+                    }
+                },
+
+                // Di dalam method submitForm()
+                submitForm() {
+                    const facultyId = '{{ $faculty->id }}';
+
+                    // ✅ PERBAIKAN: Buat objek FormData secara manual dari state Alpine.js
+                    const dataToSend = new FormData();
+                    for (const key in this.formData) {
+                        dataToSend.append(key, this.formData[key]);
+                    }
+
+                    fetch(`/api/faculties/${facultyId}/guests`, {
+                        method: 'POST',
+                        // Kirim data yang sudah kita siapkan, bukan dari elemen form
+                        body: dataToSend,
+                        headers: { 
+                            'Accept': 'application/json',
+                            // Tambahkan header CSRF token jika menggunakan session
+                            // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            isSuccessOpen = true; 
+                            setTimeout(() => location.reload(), 1000);
+                        } else {
+                            response.json().then(data => {
+                                let errorMessages = 'Gagal menyimpan data:\n';
+                                for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
+                                alert(errorMessages);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+                    });
+                },
+                
+                resetGuestData(resetNoIdentitas = true) {
+                    // ... (logika ini tidak berubah)
+                    if (resetNoIdentitas) {
+                        this.formData.no_identitas = '';
+                    }
+                    this.formData.nama = '';
+                    this.formData.no_handphone = '';
+                    this.formData.email = '';
+                    this.formData.nama_fakultas = '';
+                    this.isGuestDataLocked = false;
+                },
+                
+                resetForm() {
+                    // ... (logika ini tidak berubah)
+                    this.resetGuestData(); 
+                    this.formData.jenis_pengunjung = '';
+                    this.formData.jenis_layanan = '';
+                    this.formData.perihal = '';
+                }
+            }
+        }
+    </script>
     <script>
     </script>
 </body>

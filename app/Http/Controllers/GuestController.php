@@ -8,6 +8,7 @@ use App\Models\Faculty;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Exports\GuestsExport;
+use App\Models\HistoryKunjungan;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -47,7 +48,28 @@ class GuestController extends Controller
 
         $guest = Guest::create($guestData);
 
+        if ($guest->no_identitas) {
+            HistoryKunjungan::firstOrCreate([
+                'no_identitas' => $guest->no_identitas,
+                'faculty_id'   => $guest->faculty_id,
+            ]);
+        }
+
         return response()->json(['message' => 'Data tamu berhasil disimpan!', 'data' => $guest], 201);
+    }
+
+    public function searchByNoIdentitas($no_identitas)
+    {
+        // Cari data tamu terakhir berdasarkan no_identitas
+        $guest = Guest::where('no_identitas', $no_identitas)
+                      ->latest() // Mengambil record terbaru (sama dengan orderBy('created_at', 'desc'))
+                      ->first();
+
+        if ($guest) {
+            return response()->json($guest);
+        }
+
+        return response()->json(['message' => 'Data tamu tidak ditemukan'], 404);
     }
 
     public function index(Request $request)

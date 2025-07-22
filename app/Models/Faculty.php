@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Feedback;
 use App\Models\Schedule;
 use App\Models\Announcement;
+use App\Models\HistoryKunjungan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,11 @@ class Faculty extends Model
     public function maps(): HasMany
     {
         return $this->hasMany(Map::class);
+    }
+
+    public function historykunjungans(): HasMany
+    {
+        return $this->hasMany(HistoryKunjungan::class);
     }
     
     public function announcements(): HasMany
