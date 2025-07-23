@@ -164,7 +164,7 @@
                                 <div class="field">
                                     <input id="no_identitas" name="no_identitas" x-model="formData.no_identitas" @blur="searchGuest" class="content text-wrapper-2" type="tel"
                                         :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : formData.jenis_pengunjung === 'dosen' ? 'Ketik NUPTK lalu keluar dari kolom ini' : 'Ketik NIP lalu keluar dari kolom ini'"
-                                        :required="['tendik'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
+                                        :required="['tendik'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka." maxlength="20">
                                 </div>
                             </div>
                             <div class="input">
@@ -195,12 +195,13 @@
                                         <option value="" disabled>Pilih Fakultas...</option>
                                         <option value="FKIP">FKIP</option>
                                         <option value="FMIPA">FMIPA</option>
-                                        <option value="FT">FT</option>
+                                        <option value="FT">F. TEKNIK</option>
                                         <option value="FEB">FEB</option>
                                         <option value="FAPERTA">FAPERTA</option>
                                         <option value="FAPERIKA">FAPERIKA</option>
-                                        <option value="FH">FH</option>
-                                        <option value="FK">FK</option>
+                                        <option value="FISIP">FISIP</option>
+                                        <option value="FH">F. HUKUM</option>
+                                        <option value="FK">F. KEDOKTERAN</option>
                                         <option value="KEPERAWATAN">KEPERAWATAN</option>
                                     </select>
                                 </div>
