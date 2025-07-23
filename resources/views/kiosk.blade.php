@@ -157,21 +157,52 @@
                         </div>
                     </div>
 
-                    <template x-if="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)">
+                    <template x-if="['tendik'].includes(formData.jenis_pengunjung)">
                         <div x-transition>
                             <div class="input">
                                 <label for="no_identitas" class="form-label" x-text="formData.jenis_pengunjung === 'mahasiswa' ? 'NIM' : formData.jenis_pengunjung === 'dosen' ? 'NUPTK' : 'NIP'"></label>
                                 <div class="field">
                                     <input id="no_identitas" name="no_identitas" x-model="formData.no_identitas" @blur="searchGuest" class="content text-wrapper-2" type="tel"
                                         :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : formData.jenis_pengunjung === 'dosen' ? 'Ketik NUPTK lalu keluar dari kolom ini' : 'Ketik NIP lalu keluar dari kolom ini'"
-                                        :required="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
+                                        :required="['tendik'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka.">
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="nama_fakultas" class="form-label">Fakultas/Unit</label>
+                                <div class="field">
+                                    <input id="nama_fakultas" name="nama_fakultas" x-model="formData.nama_fakultas" :disabled="isGuestDataLocked" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
+                                        :required="['tendik'].includes(formData.jenis_pengunjung)" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template x-if="['mahasiswa', 'dosen'].includes(formData.jenis_pengunjung)">
+                        <div x-transition>
+                            <div class="input">
+                                <label for="no_identitas" class="form-label" x-text="formData.jenis_pengunjung === 'mahasiswa' ? 'NIM' : 'NUPTK'"></label>
+                                <div class="field">
+                                    <input id="no_identitas" name="no_identitas" x-model="formData.no_identitas" @blur="searchGuest" class="content text-wrapper-2" type="tel"
+                                        :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : 'Ketik NUPTK lalu keluar dari kolom ini'"
+                                        :required="['mahasiswa', 'dosen'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka." maxlength="20">
                                 </div>
                             </div>
                             <div class="input">
                                 <label for="nama_fakultas" class="form-label">Fakultas</label>
                                 <div class="field">
-                                    <input id="nama_fakultas" name="nama_fakultas" x-model="formData.nama_fakultas" :disabled="isGuestDataLocked" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
-                                        :required="['mahasiswa', 'dosen', 'tendik'].includes(formData.jenis_pengunjung)" autocomplete="off">
+                                    <select id="nama_fakultas" name="nama_fakultas" x-model="formData.nama_fakultas" :disabled="isGuestDataLocked" class="content text-wrapper-2" type="text" placeholder="Ketik fakultas kamu di sini"
+                                        :required="['mahasiswa', 'dosen'].includes(formData.jenis_pengunjung)" autocomplete="off">
+                                        <option value="" disabled>Pilih Fakultas...</option>
+                                        <option value="FKIP">FKIP</option>
+                                        <option value="FMIPA">FMIPA</option>
+                                        <option value="FT">FT</option>
+                                        <option value="FEB">FEB</option>
+                                        <option value="FAPERTA">FAPERTA</option>
+                                        <option value="FAPERIKA">FAPERIKA</option>
+                                        <option value="FH">FH</option>
+                                        <option value="FK">FK</option>
+                                        <option value="KEPERAWATAN">KEPERAWATAN</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -741,8 +772,6 @@
                 }
             }
         }
-    </script>
-    <script>
     </script>
 </body>
 </html>
