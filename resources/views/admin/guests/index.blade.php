@@ -45,13 +45,13 @@
                                     <label for="jenis_pengunjung" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Pengunjung</label>
                                     <select id="jenis_pengunjung" name="jenis_pengunjung" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                         <option value="">Semua Jenis</option>
-                                        {{-- @foreach($visitorTypes as $type) 
-                                        <option value="{{ $type }}" @selected(request('jenis_pengunjung') == $type)>{{ ucfirst($type) }}</option>
-                                        @endforeach --}}
-                                        <option value="mahasiswa" @selected(request('jenis_pengunjung') == 'mahasiswa')>Mahasiswa</option>
-                                        <option value="dosen" @selected(request('jenis_pengunjung') == 'dosen')>Dosen</option>
-                                        <option value="tendik" @selected(request('jenis_pengunjung') == 'tendik')>Tendik</option>
-                                        <option value="umum" @selected(request('jenis_pengunjung') == 'umum')>Umum</option>
+                                        {{-- Loop melalui variabel $visitorTypes dari controller --}}
+                                        @foreach($visitorTypes as $type)
+                                            {{-- Jangan tampilkan jika type kosong/null --}}
+                                            @if($type)
+                                                <option value="{{ $type }}" @selected(request('jenis_pengunjung') == $type)>{{ ucfirst($type) }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

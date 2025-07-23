@@ -112,6 +112,12 @@ class GuestController extends Controller
             return $q->where('jenis_pengunjung', $request->input('jenis_pengunjung'));
         });
 
+        $visitorTypes = Guest::query()
+                        ->select('jenis_pengunjung')
+                        ->distinct()
+                        ->orderBy('jenis_pengunjung','ASC')
+                        ->pluck('jenis_pengunjung');
+
         $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
 
         $chartQuery = Guest::query();
@@ -136,6 +142,7 @@ class GuestController extends Controller
             'guests' => $guests,
             'chartLabels' => $chartLabels,
             'chartData' => $chartData,
+            'visitorTypes' => $visitorTypes,
         ]);
     }
 
