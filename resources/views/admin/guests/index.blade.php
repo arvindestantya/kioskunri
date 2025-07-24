@@ -71,13 +71,48 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">NIP/NIM/NUPTK<br>Asal Fakultas</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kontak</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis Layanan</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Perihal</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal</th>
+                                    {{-- Helper function untuk membuat link --}}
+                                    @php
+                                        function sortable_link($column, $label) {
+                                            $sortColumn = request('sort');
+                                            $sortDirection = request('direction', 'asc');
+                                            
+                                            // Toggle direction jika kolom yang sama diklik
+                                            $direction = ($sortColumn == $column && $sortDirection == 'asc') ? 'desc' : 'asc';
+                                            
+                                            $icon = '';
+                                            if ($sortColumn == $column) {
+                                                $icon = $sortDirection == 'asc' ? '▲' : '▼';
+                                            }
+
+                                            // Tambahkan parameter filter yang sudah ada jika perlu
+                                            $queryParams = array_merge(request()->except('sort', 'direction'), ['sort' => $column, 'direction' => $direction]);
+                                            
+                                            return '<a href="?'.http_build_query($queryParams).'">'.$label.' <span class="text-xs">'.$icon.'</span></a>';
+                                        }
+                                    @endphp
+
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        {!! sortable_link('nama', 'Nama') !!}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        NIP/NIM/NUPTK<br>Asal Fakultas
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Kontak
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        {!! sortable_link('jenis_pengunjung', 'Jenis') !!}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        {!! sortable_link('jenis_layanan', 'Jenis Layanan') !!}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Perihal
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        {!! sortable_link('created_at', 'Tanggal') !!}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">

@@ -46,7 +46,7 @@
                   if (this.imageCount > 1) {
                       this.sliderInterval = setInterval(() => {
                           this.activeIndex = (this.activeIndex + 1) % this.imageCount;
-                      }, 3000);
+                      }, 5000);
                   }
               }
           }"
@@ -180,10 +180,10 @@
                     <template x-if="['mahasiswa', 'dosen'].includes(formData.jenis_pengunjung)">
                         <div x-transition>
                             <div class="input">
-                                <label for="no_identitas" class="form-label" x-text="formData.jenis_pengunjung === 'mahasiswa' ? 'NIM' : 'NUPTK'"></label>
+                                <label for="no_identitas" class="form-label" x-text="formData.jenis_pengunjung === 'mahasiswa' ? 'NIM' : 'NUPTK/NIP'"></label>
                                 <div class="field">
                                     <input id="no_identitas" name="no_identitas" x-model="formData.no_identitas" @blur="searchGuest" class="content text-wrapper-2" type="tel"
-                                        :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : 'Ketik NUPTK lalu keluar dari kolom ini'"
+                                        :placeholder="formData.jenis_pengunjung === 'mahasiswa' ? 'Ketik NIM lalu keluar dari kolom ini' : 'Ketik NUPTK/NIP lalu keluar dari kolom ini'"
                                         :required="['mahasiswa', 'dosen'].includes(formData.jenis_pengunjung)" autocomplete="off" pattern="[0-9]+" title="Hanya boleh diisi angka." maxlength="20">
                                 </div>
                             </div>

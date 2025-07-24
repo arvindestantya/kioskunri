@@ -76,6 +76,15 @@ class GuestController extends Controller
     {
         $user = auth()->user();
         $search = $request->input('search');
+
+        $validSortColumns = ['nama', 'created_at', 'jenis_pengunjung', 'jenis_layanan'];
+        $sortColumn = $request->query('sort', 'created_at');
+        $sortDirection = $request->query('direction', 'desc');
+
+        // Validasi kolom untuk keamanan
+        if (!in_array($sortColumn, $validSortColumns)) {
+            $sortColumn = 'created_at';
+        }
         
         $guestsQuery = Guest::query();
 
@@ -118,7 +127,9 @@ class GuestController extends Controller
                         ->orderBy('jenis_pengunjung','ASC')
                         ->pluck('jenis_pengunjung');
 
-        $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
+        // $guests = $guestsQuery->latest()->paginate(15)->withQueryString();
+
+        $guests = $guestsQuery->orderBy($sortColumn, $sortDirection)->paginate(15)->withQueryString();
 
         $chartQuery = Guest::query();
 
