@@ -151,7 +151,7 @@
                                 <label for="jenis-tendik" class="radio-label ml-2">Tendik</label>
                             </div>
                             <div class="flex items-center">
-                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required>
+                                <input x-model="formData.jenis_pengunjung" type="radio" id="jenis-umum" name="jenis_pengunjung" value="umum" class="radio-input" required @click="resetForPublicVisitor()">
                                 <label for="jenis-umum" class="radio-label ml-2">Umum</label>
                             </div>
                         </div>
@@ -215,18 +215,23 @@
                             <input id="nama" name="nama" x-model="formData.nama" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content text-wrapper-2" type="text" placeholder="Ketik nama kamu di sini" required autocomplete="off" pattern="[\p{L}\s.,]+" title="Hanya boleh diisi huruf, spasi, titik, dan koma."/>
                         </div>
                     </div>
-                    <div class="input">
-                        <label for="handphone" class="form-label">No. Handphone</label>
-                        <div class="field">
-                            <input id="handphone" name="no_handphone" x-model="formData.no_handphone" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/>
+                    <template x-if="!isGuestDataLocked">
+                        <div class="input" x-transition>
+                            <label for="handphone" class="form-label">No. Handphone</label>
+                            <div class="field">
+                                <input id="handphone" name="no_handphone" x-model="formData.no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="input">
-                        <label for="email" class="form-label">Email</label>
-                        <div class="field">
-                            <input id="email" name="email" x-model="formData.email" :disabled="isGuestDataLocked || !formData.jenis_pengunjung" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" />
+                    </template>
+
+                    <template x-if="!isGuestDataLocked">
+                        <div class="input" x-transition>
+                            <label for="email" class="form-label">Email</label>
+                            <div class="field">
+                                <input id="email" name="email" x-model="formData.email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" />
+                            </div>
                         </div>
-                    </div>
+                    </template>
 
                     <div class="input">
                         <label for="jenis_layanan" class="form-label">Jenis Layanan</label>
@@ -695,6 +700,20 @@
                     perihal: ''
                 },
                 isGuestDataLocked: false,
+
+                resetForPublicVisitor() {
+                    this.formData = {
+                        jenis_pengunjung: 'umum', // Tetapkan 'umum' sebagai pilihan
+                        no_identitas: '',
+                        nama_fakultas: '',
+                        nama: '',
+                        no_handphone: '',
+                        email: '',
+                        jenis_layanan: '',
+                        perihal: ''
+                    };
+                    this.isGuestDataLocked = false; // Pastikan data tidak terkunci
+                },
 
                 async searchGuest() {
                     const noIdentitas = this.formData.no_identitas;
