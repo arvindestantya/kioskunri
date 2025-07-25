@@ -31,12 +31,6 @@ use App\Http\Controllers\SuperAdmin\FacultyController as SuperAdminFacultyContro
 // Route dashboard utama sekarang menunjuk ke data tamu
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/admin/guests', [GuestController::class, 'index'])
-    ->middleware(['auth', 'verified'])->name('guests');
-Route::get('/admin/feedbacks', [FeedbackController::class, 'index'])
-    ->middleware(['auth', 'verified'])->name('feedbacks');
-Route::get('/admin/surveys', [SurveyController::class, 'index'])
-    ->middleware(['auth', 'verified'])->name('surveys');
 
 // Include route autentikasi dari Breeze (login, register, dll.)
 // Ini harus diproses SEBELUM route dinamis {faculty:slug}
@@ -50,11 +44,14 @@ Route::middleware('auth')->group(function () {
 });
 
 // Route untuk fitur yang bisa diakses semua admin
-Route::middleware(['auth', 'verified'])->group(function() {
+Route::middleware(['auth', 'role:Faculty Admin'])->group(function() {
+    Route::get('/admin/guests', [GuestController::class, 'index'])->name('guests');
     Route::delete('/admin/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
     Route::get('/admin/guests/export', [GuestController::class, 'export'])->name('guests.export');
+    Route::get('/admin/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks');
     Route::delete('/admin/feedbacks/{feedback}', [FeedbackController::class, 'destroy'])->name('feedbacks.destroy');
     Route::get('/admin/feedbacks/export', [FeedbackController::class, 'export'])->name('feedbacks.export');
+    Route::get('/admin/surveys', [SurveyController::class, 'index'])->name('surveys');
     Route::delete('/admin/surveys/{survey}', [SurveyController::class, 'destroy'])->name('surveys.destroy');
     Route::get('/admin/surveys/export', [SurveyController::class, 'export'])->name('surveys.export');
 
@@ -74,6 +71,16 @@ Route::middleware(['auth', 'verified'])->group(function() {
 Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::resource('faculties', SuperAdminFacultyController::class);
     Route::resource('users', SuperAdminUserController::class);
+    Route::resource('contacts', ContactController::class)->names('contacts');
+    Route::resource('schedules', ScheduleController::class)->names('schedules');
+    Route::resource('maps', MapController::class)->names('maps');
+    Route::resource('announcements', AnnouncementController::class)->names('announcements');
+    Route::resource('events', EventController::class)->names('events');
+    Route::resource('services', ServiceController::class)->names('services');
+    Route::resource('guests', GuestController::class)->names('guests');
+    Route::resource('feedbacks', FeedbackController::class)->names('feedbacks');
+    Route::resource('surveys', SurveyController::class)->names('surveys');
+    Route::resource('flyers', FlyerController::class)->names('flyers');
 });
 
 

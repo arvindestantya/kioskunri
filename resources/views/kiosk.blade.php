@@ -219,7 +219,7 @@
                         <div class="input" x-transition>
                             <label for="handphone" class="form-label">No. Handphone</label>
                             <div class="field">
-                                <input id="handphone" name="no_handphone" x-model="formData.no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13"/>
+                                <input id="handphone" name="no_handphone" x-model="formData.no_handphone" class="content text-wrapper-2" type="tel" placeholder="Ketik No. HP kamu di sini" required autocomplete="off" pattern="^\+?[0-9]+$" title="Hanya boleh diisi angka dan dapat diawali dengan tanda +." minlength="10" maxlength="13" :disabled="!formData.jenis_pengunjung"/>
                             </div>
                         </div>
                     </template>
@@ -228,7 +228,7 @@
                         <div class="input" x-transition>
                             <label for="email" class="form-label">Email</label>
                             <div class="field">
-                                <input id="email" name="email" x-model="formData.email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" />
+                                <input id="email" name="email" x-model="formData.email" class="content-2" type="email" placeholder="Ketik email kamu di sini" required autocomplete="off" :disabled="!formData.jenis_pengunjung"/>
                             </div>
                         </div>
                     </template>

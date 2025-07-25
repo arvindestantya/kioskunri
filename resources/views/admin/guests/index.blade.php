@@ -92,6 +92,9 @@
                                         }
                                     @endphp
 
+                                    @hasrole('Super Admin')
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fakultas</th>
+                                    @endhasrole
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         {!! sortable_link('nama', 'Nama') !!}
                                     </th>
@@ -113,24 +116,31 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         {!! sortable_link('created_at', 'Tanggal') !!}
                                     </th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider breal a;;">
+                                        Kunjungan Ke
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($guests as $guest)
                                     <tr>
+                                        @hasrole('Super Admin')
+                                        <td class="px-6 py-4 whitespace-normal break text-sm text-gray-700 dark:text-gray-300">{{ $guest->faculty->name ?? 'N/A' }}</td>
+                                        @endhasrole
                                         <td class="px-6 py-4 whitespace-normal text-gray-900 dark:text-gray-200">{{ $guest->nama }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-gray-900 dark:text-gray-200">{{ $guest->no_identitas }}</div>
                                             <div class="text-sm text-gray-500 dark:text-gray-400">{{ $guest->nama_fakultas }}</div>
                                         </td>
-                                        <td class="px-6 py-4 w-48 whitespace-normal break-all">
+                                        <td class="px-6 py-4 w-48 whitespace-normal ">
                                             <div class="text-gray-900 dark:text-gray-200">{{ $guest->no_handphone }}</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $guest->email }}</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400 break-all">{{ $guest->email }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ ucfirst($guest->jenis_pengunjung) }}</td>
                                         <td class="px-6 py-4 whitespace-normal max-w-xs text-gray-900 dark:text-gray-200">{{ $guest->jenis_layanan }}</td>
                                         <td class="px-6 py-4 whitespace-normal text-gray-900 dark:text-gray-200">{{ $guest->perihal }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->created_at->format('d M Y, H:i') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->visit_number}}</td>
                                     </tr>
                                 @empty
                                     <tr><td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">Data tidak ditemukan sesuai filter.</td></tr>

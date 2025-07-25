@@ -84,9 +84,19 @@ class GuestController extends Controller
         // Validasi kolom untuk keamanan
         if (!in_array($sortColumn, $validSortColumns)) {
             $sortColumn = 'created_at';
-        }
+        }  
         
         $guestsQuery = Guest::query();
+
+        $guestsQuery->addSelect([
+            '*',
+            DB::raw('(SELECT count(*) FROM guests as g2 WHERE 
+                (
+                    (guests.jenis_pengunjung != "Umum" AND g2.no_identitas = guests.no_identitas) OR
+                    (guests.jenis_pengunjung = "Umum" AND g2.no_handphone = guests.no_handphone)
+                ) 
+                AND g2.created_at <= guests.created_at) as visit_number')
+        ]);
 
         if ($user->hasRole('Super Admin')) {
             $guestsQuery->with('faculty'); 

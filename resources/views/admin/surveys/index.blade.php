@@ -78,6 +78,9 @@
                             {{-- Menambahkan style dark mode untuk header tabel --}}
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
+                                    @hasrole('Super Admin')
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fakultas</th>
+                                    @endhasrole
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Rating</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pesan</th>
@@ -88,6 +91,9 @@
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($surveys as $survey)
                                     <tr>
+                                        @hasrole('Super Admin')
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ $survey->faculty->name ?? 'N/A' }}</td>
+                                        @endhasrole
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $survey->nama }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $survey->rating }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-200">{{ $survey->pesan }}</td>
