@@ -81,7 +81,6 @@ class GuestController extends Controller
         $sortColumn = $request->query('sort', 'created_at');
         $sortDirection = $request->query('direction', 'desc');
 
-        // Validasi kolom untuk keamanan
         if (!in_array($sortColumn, $validSortColumns)) {
             $sortColumn = 'created_at';
         }
