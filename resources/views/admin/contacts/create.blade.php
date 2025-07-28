@@ -56,9 +56,16 @@
                         </div>
 
                         <div class="flex items-center justify-end mt-6">
+                            @hasrole('Super Admin')
+                            <a href="{{ route('superadmin.contacts.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mr-4">
+                                Batal
+                            </a>
+                            @endhasrole
+                            @hasrole('Faculty Admin')
                             <a href="{{ route('contacts.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mr-4">
                                 Batal
                             </a>
+                            @endhasrole
                             <x-primary-button>
                                 {{ __('Simpan Kontak') }}
                             </x-primary-button>

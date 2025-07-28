@@ -250,10 +250,7 @@
                     <div class="input">
                         <label for="perihal" class="form-label">Perihal</label>
                         <div class="field-2">
-                            <textarea id="perihal" name="perihal" x-model="formData.perihal" class="content text-wrapper-2" 
-                                    placeholder="Ketik perihal kunjungan kamu" autocomplete="off"
-                                    :required="formData.jenis_layanan === 'Lainnya'"
-                                    :disabled="!formData.jenis_pengunjung"></textarea>
+                            <textarea id="perihal" name="perihal" x-model="formData.perihal" class="content text-wrapper-2" placeholder="Ketik perihal kunjungan kamu" autocomplete="off" required :disabled="!formData.jenis_pengunjung"></textarea>
                         </div>
                     </div>
 
@@ -703,7 +700,7 @@
 
                 resetForPublicVisitor() {
                     this.formData = {
-                        jenis_pengunjung: 'umum', // Tetapkan 'umum' sebagai pilihan
+                        jenis_pengunjung: 'umum',
                         no_identitas: '',
                         nama_fakultas: '',
                         nama: '',
@@ -712,7 +709,7 @@
                         jenis_layanan: '',
                         perihal: ''
                     };
-                    this.isGuestDataLocked = false; // Pastikan data tidak terkunci
+                    this.isGuestDataLocked = false;
                 },
 
                 async searchGuest() {

@@ -32,10 +32,10 @@ class GuestController extends Controller
             'nama_fakultas' => 'nullable|string|max:255',
             'jenis_layanan' => 'required|string|max:255',
             'perihal' => [
-                'nullable',
+                'required',
                 'string',
-                'required_without:jenis_layanan',
-                'required_if:jenis_layanan,Lainnya', 
+                // 'required_without:jenis_layanan',
+                // 'required_if:jenis_layanan,Lainnya', 
             ],
         ]);
 
@@ -60,9 +60,8 @@ class GuestController extends Controller
 
     public function searchByNoIdentitas($no_identitas)
     {
-        // Cari data tamu terakhir berdasarkan no_identitas
         $guest = Guest::where('no_identitas', $no_identitas)
-                      ->latest() // Mengambil record terbaru (sama dengan orderBy('created_at', 'desc'))
+                      ->latest()
                       ->first();
 
         if ($guest) {
@@ -81,10 +80,9 @@ class GuestController extends Controller
         $sortColumn = $request->query('sort', 'created_at');
         $sortDirection = $request->query('direction', 'desc');
 
-        // Validasi kolom untuk keamanan
         if (!in_array($sortColumn, $validSortColumns)) {
             $sortColumn = 'created_at';
-        }  
+        }
         
         $guestsQuery = Guest::query();
 
