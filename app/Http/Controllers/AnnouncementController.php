@@ -36,7 +36,7 @@ class AnnouncementController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'faculty_id' => 'nullable|exists:faculties,id', // 'nullable' untuk Pengumuman umum
+            'faculty_id' => 'nullable|exists:faculties,id',
         ]);
 
         Announcement::create($request->all());

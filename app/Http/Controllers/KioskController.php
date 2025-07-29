@@ -22,7 +22,7 @@ class KioskController extends Controller
             })
             // ->where('start_date', '>=', today()) // Hanya yang akan datang
             ->orderBy('start_date', 'asc')
-            ->take(5)                     
+            ->take(5)
             ->get();
         
         $announcements = Announcement::where(function ($query) use ($faculty) {
