@@ -28,7 +28,7 @@ class RoleAndPermissionSeeder extends Seeder
         // Buat contoh fakultas dan adminnya
         $faculty = Faculty::create([
             'name' => 'Unit Penunjang Akademik TIK',
-            'slug' => 'upa-tik'
+            'slug' => 'unit-penunjang-akademik-tik'
         ]);
 
         $facultyAdminUser = User::create([
