@@ -632,12 +632,10 @@
                         <ul class="space-y-6">
                             @forelse ($events as $event)
                                 <li class="flex flex-col sm:flex-row items-start gap-4 pb-6 border-b border-gray-200 last:border-b-0">
-                                    <!-- Poster Kegiatan -->
                                     @if($event->path)
                                     <img src="{{ asset('storage/' . $event->path) }}" alt="{{ $event->title }}" class="w-full sm:w-48 h-auto rounded-lg object-cover">
                                     @endif
                                     
-                                    <!-- Detail Kegiatan -->
                                     <div class="flex-grow">
                                         <h4 class="font-bold text-xl text-gray-800">{{ $event->title }}</h4>
                                         <div class="flex items-center gap-4 text-sm text-gray-500 mt-1">

@@ -91,7 +91,7 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 // Route utama yang cerdas (redirect ke fakultas pertama)
 Route::get('/', function () {
     $firstFaculty = Faculty::firstOrFail();
-    return redirect()->route('kiosk.show', ['faculty' => 'unit-penunjang-akademik-tik']);
+    return redirect()->route('kiosk.show', ['faculty' => $firstFaculty->slug]);
 });
 
 // Route dinamis untuk menampilkan Kiosk berdasarkan slug fakultas
