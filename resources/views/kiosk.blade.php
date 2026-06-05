@@ -774,22 +774,21 @@
             </div>
 
             <div class="form-modal-overlay z-50" x-show="isMalPelayananOpen" x-transition x-cloak>
-                <main class="form !max-w-5xl" x-show="isMalPelayananOpen" x-transition>
-                    <header class="headline">
-                        <h1 class="frame"><span class="text-wrapper">Mal Pelayanan Publik</span></h1>
-                        <button class="close-button" aria-label="Tutup" @click="isMalPelayananOpen = false">
-                            <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                <div x-show="isMalPelayananOpen" x-transition
+                     style="position:fixed; inset:1rem; background:#fff; border-radius:1rem; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.4);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid #e5e7eb; flex-shrink:0;">
+                        <span style="font-size:1.125rem; font-weight:700;">Mal Pelayanan Publik</span>
+                        <button @click="isMalPelayananOpen = false" style="background:none; border:none; cursor:pointer; padding:0.25rem;">
+                            <img src="{{ secure_asset('img/iconx.png') }}" alt="Tutup" style="width:1.5rem; height:1.5rem;">
                         </button>
-                    </header>
-                    <div class="form-wrapper">
-                        <iframe
-                            src="http://localhost/index.php?pages=nomor"
-                            title="Mal Pelayanan Publik"
-                            frameborder="0"
-                            class="iframe-full-modal"
-                        ></iframe>
                     </div>
-                </main>
+                    <iframe
+                        src="http://localhost/index.php?pages=nomor"
+                        title="Mal Pelayanan Publik"
+                        frameborder="0"
+                        style="flex:1; width:100%; border:none;"
+                    ></iframe>
+                </div>
             </div>
 
             <div class="form-modal-overlay z-50"
