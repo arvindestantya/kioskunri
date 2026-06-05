@@ -46,8 +46,6 @@
               caraMendapatkan: '',
               alasanKeberatan: '',
 
-              nomorAntrian: null,
-
               startSlider() {
                   if (this.imageCount > 1) {
                       this.sliderInterval = setInterval(() => {
@@ -57,7 +55,6 @@
               }
           }"
           x-init="startSlider()"
-          @antrian-sukses.window="isFormOpen = false; nomorAntrian = $event.detail.nomorAntrian; isSuccessOpen = true">
 
         <div class="menu">
           <header class="header">
@@ -89,6 +86,17 @@
                     <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Rektorat</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Rektorat</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isPPIDOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/logo-ppid.png') }}" alt="PPID icon"><figcaption>PPID</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/icon-survey.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+                    @break
+                @case('fakultas-ilmu-sosial-dan-ilmu-politik')
+                    <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
+                    <a href="http://localhost/fisip/index.php?pages=nomor" target="_blank" class="card-link"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Ambil Antrian icon"><figcaption>Ambil<br>Antrian</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Fakultas</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
@@ -1079,12 +1087,6 @@
                 <img src="{{ secure_asset('img/32.png') }}" alt="Success Icon" class="success-modal-icon">
                 <div class="success-modal-headline-wrapper">
                   <h2 class="success-modal-headline-text">Data kamu berhasil disimpan</h2>
-                  <template x-if="nomorAntrian">
-                    <div style="margin-top:1rem; text-align:center;">
-                      <p style="font-size:1rem; color:#6b7280;">Nomor Antrian Anda</p>
-                      <p x-text="nomorAntrian" style="font-size:3rem; font-weight:800; color:#4f46e5; letter-spacing:0.05em;"></p>
-                    </div>
-                  </template>
                 </div>
               </div>
           </div>
@@ -1146,60 +1148,34 @@
                     }
                 },
 
-                async cetakAntrian(jenisPengunjung) {
-                    const codeMap = { mahasiswa: 'A', dosen: 'B', tendik: 'B', umum: 'C' };
-                    const code = codeMap[jenisPengunjung] ?? 'A';
-                    try {
-                        const res = await fetch('http://localhost/pages/nomor/action.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: `type=create_antrian&code_antrian=${code}`,
-                            signal: AbortSignal.timeout(5000),
-                        });
-                        const data = await res.json();
-                        if (data.success) {
-                            return data.data.code_antrian + data.data.no_antrian;
-                        }
-                    } catch (_) {}
-                    return null;
-                },
-
-                async submitForm() {
+                submitForm() {
                     const facultyId = '{{ $faculty->id }}';
-                    const facultySlug = '{{ $faculty->slug }}';
 
                     const dataToSend = new FormData();
                     for (const key in this.formData) {
                         dataToSend.append(key, this.formData[key]);
                     }
 
-                    let response;
-                    try {
-                        response = await fetch(`/api/faculties/${facultyId}/guests`, {
-                            method: 'POST',
-                            body: dataToSend,
-                            headers: { 'Accept': 'application/json' },
-                        });
-                    } catch (error) {
+                    fetch(`/api/faculties/${facultyId}/guests`, {
+                        method: 'POST',
+                        body: dataToSend,
+                        headers: { 'Accept': 'application/json' },
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            this.isSuccessOpen = true;
+                            setTimeout(() => location.reload(), 3000);
+                        } else {
+                            response.json().then(data => {
+                                let errorMessages = 'Gagal menyimpan data:\n';
+                                for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
+                                alert(errorMessages);
+                            });
+                        }
+                    })
+                    .catch(error => {
                         alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
-                        return;
-                    }
-
-                    if (!response.ok) {
-                        const data = await response.json();
-                        let errorMessages = 'Gagal menyimpan data:\n';
-                        for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
-                        alert(errorMessages);
-                        return;
-                    }
-
-                    let nomorAntrian = null;
-                    if (facultySlug === 'fakultas-ilmu-sosial-dan-ilmu-politik') {
-                        nomorAntrian = await this.cetakAntrian(this.formData.jenis_pengunjung);
-                    }
-
-                    this.$dispatch('antrian-sukses', { nomorAntrian });
-                    setTimeout(() => location.reload(), nomorAntrian ? 6000 : 3000);
+                    });
                 },
 
                 resetGuestData(resetNoIdentitas = true) {
