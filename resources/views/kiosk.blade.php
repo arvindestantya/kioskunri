@@ -94,7 +94,7 @@
                     @break
                 @case('fakultas-ilmu-sosial-dan-ilmu-politik')
                     <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
-                    <a href="#" class="card-link" @click.prevent="isMalPelayananOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Ambil Antrian icon"><figcaption>Mal Pelayanan<br>Publik</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMalPelayananOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-99.png') }}" alt="Ambil Antrian icon"><figcaption>Mal Pelayanan<br>Publik</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Fakultas</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
