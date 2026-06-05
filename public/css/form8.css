@@ -1,0 +1,189 @@
+.form-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; }
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    background-color: var(--semantic-color-background-primary);
+    border-radius: var(--border-radius-m);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 90%;
+
+    /* MODIFIKASI INI: LEBAR MAKSIMUM DINAIKKAN menjadi 1000px */
+    max-width: 1000px;
+
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+/* 2. Pastikan Wrapper Iframe Mengisi Ruang */
+/* Asumsikan iframe Anda dibungkus di dalam .form-wrapper */
+.form-wrapper {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1; /* Penting agar container ini mengambil sisa ruang vertikal */
+    padding: 0;
+}
+
+/* 3. CSS untuk elemen IFRAME itu sendiri */
+.iframe-full-modal {
+    width: 100%; /* Mengisi lebar penuh kontainer */
+    height: 100%; /* Mengisi tinggi penuh kontainer */
+    min-height: 400px;
+    border: none;
+    overflow: auto;
+}
+.grid-2-col-fields {
+    display: grid;
+    /* Membuat dua kolom dengan lebar yang sama, beri jarak 20px */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* [BARU] Media Query untuk Responsif */
+@media (max-width: 768px) {
+    /* Di layar yang lebih kecil (misalnya HP), tata letak kembali ke 1 kolom */
+    .grid-2-col-fields {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+/* [BARU] Style untuk Pilihan Radio di Dalam Group */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Jarak antar pilihan radio */
+    margin-top: 6px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px 0;
+    font-size: var(--text-m-regular-font-size);
+}
+
+.radio-group input[type="radio"],
+.radio-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* [BARU] Style khusus untuk button pilihan (jika menggunakan tombol di awal) */
+.button-choice {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--semantic-color-border-primary);
+    border-radius: var(--border-radius-m);
+    background-color: var(--semantic-color-background-primary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-weight: var(--text-l-semibold-font-weight);
+    color: var(--semantic-color-content-secondary);
+}
+
+.button-choice:hover {
+    background-color: var(--semantic-color-background-tertiary);
+}
+
+.button-choice.selected {
+    border-color: var(--semantic-color-border-brand); /* Border warna brand saat terpilih */
+    background-color: var(--semantic-color-background-brand-light); /* Background warna terang saat terpilih */
+    color: var(--semantic-color-content-brand);
+}
+.headline { display: flex; align-items: center; justify-content: space-between; align-self: stretch; width: 100%; }
+.headline .frame { flex: 1; }
+.headline .text-wrapper { font-family: var(--heading-m-semibold-font-family); font-weight: var(--heading-m-semibold-font-weight); color: var(--semantic-color-content-secondary); font-size: var(--heading-m-semibold-font-size); letter-spacing: var(--heading-m-semibold-letter-spacing); line-height: var(--heading-m-semibold-line-height); font-style: var(--heading-m-semibold-font-style); white-space: normal; }
+.close-button { background: none; border: none; cursor: pointer; padding: 4px; }
+.close-button .img { width: 24px; height: 24px; }
+.input-field { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; align-self: stretch; width: 100%; }
+.input { display: flex; flex-direction: column; align-items: flex-start; align-self: stretch; width: 100%; }
+.form-label { /* RENAMED FROM .input .div, .input .email */
+  font-family: var(--text-m-regular-font-family);
+  font-weight: var(--text-m-regular-font-weight);
+  color: var(--semantic-color-content-tertiary);
+  font-size: var(--text-m-regular-font-size);
+  letter-spacing: var(--text-m-regular-letter-spacing);
+  line-height: var(--text-m-regular-line-height);
+  font-style: var(--text-m-regular-font-style);
+}
+.field, .field-2 { margin-top: 6px; display: flex; align-items: center; padding: 10px 16px; align-self: stretch; width: 100%; gap: 8px; border: 1px solid var(--semantic-color-border-primary); border-radius: var(--border-radius-m); position: relative; background-color: var(--semantic-color-background-primary); }
+.field .content, .field-2 .content, .field .content-2 { flex: 1; font-family: var(--text-l-regular-font-family); font-weight: var(--text-l-regular-font-weight); font-size: var(--text-l-regular-font-size); color: var(--semantic-color-content-secondary); line-height: var(--text-l-regular-line-height); background-color: transparent; border: none; width: 100%; }
+.field .content::placeholder, .field-2 .content::placeholder, .field .content-2::placeholder { color: var(--semantic-color-content-tertiary); opacity: 1; }
+.field .img { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; pointer-events: none; }
+select.content { -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; }
+select.content:invalid { color: var(--semantic-color-content-tertiary); }
+.field-2 { min-height: 120px; align-items: flex-start; }
+textarea.content { resize: vertical; min-height: 90px; }
+.button { display: flex; width: 100%; padding: 10px 0px; align-items: center; justify-content: center; gap: 8px; background-color: var(--semantic-color-background-brand); border-radius: var(--border-radius-m); border: none; cursor: pointer; transition: filter 0.2s ease; margin-top: 8px; }
+.button:hover { filter: brightness(1.1); }
+.button .label { font-family: var(--text-l-semibold-font-family); font-weight: var(--text-l-semibold-font-weight); color: var(--semantic-color-content-primary-inverse); font-size: var(--text-l-semibold-font-size); letter-spacing: var(--text-l-semibold-letter-spacing); line-height: var(--text-l-semibold-line-height); font-style: var(--text-l-semibold-font-style); }
+/*
+ * Style untuk kontainer yang membungkus semua bintang.
+ * Menggunakan flexbox untuk menata bintang secara horizontal.
+*/
+.star-rating {
+    display: flex;
+    justify-content: center; /* Menengahkan bintang-bintang */
+    align-items: center;
+    padding: 8px 0; /* Memberi sedikit ruang vertikal */
+}
+
+/*
+ * Style untuk setiap bintang individu (elemen <span>).
+*/
+.star {
+    font-size: 2.5rem;      /* Ukuran bintang (bisa disesuaikan, misal: 40px) */
+    color: #d1d5db;         /* Warna bintang kosong (abu-abu muda) */
+    cursor: pointer;        /* Mengubah kursor menjadi tangan saat di-hover */
+    transition: color 0.2s ease-in-out; /* Animasi perubahan warna yang halus */
+    margin: 0 4px;          /* Memberi jarak antar bintang */
+}
+
+/*
+ * Style yang diterapkan saat bintang terisi (diklik) atau di-hover.
+ * Kelas .filled ini ditambahkan oleh Alpine.js.
+*/
+.star.filled {
+    color: #f59e0b; /* Warna bintang terisi (kuning/emas) */
+}
+
+/*
+ * (Opsional) Style untuk tombol saat non-aktif,
+ * yaitu ketika belum ada bintang yang dipilih.
+*/
+.button-disabled {
+    background-color: #9ca3af !important; /* Warna abu-abu */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.input-pair-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Menggantikan gap pada .input-field */
+    width: 100%;
+}
+
+.field-file {
+    /* ... style kontainer field-file ... */
+    /* Tambahkan style ini jika belum ada: */
+    display: flex; /* Untuk menampung input file */
+    width: 100%;
+}
+
+.field-file input[type="file"] {
+    /* MODIFIKASI: Pastikan input file mengambil lebar penuh kontainer */
+    width: 100%;
+    padding: 8px 12px; /* Tambahkan padding agar tombol 'Choose File' terlihat rapi */
+    border: 1px solid var(--semantic-color-border-primary);
+    border-radius: var(--border-radius-m);
+    /* ... style lain ... */
+}

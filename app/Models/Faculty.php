@@ -24,17 +24,17 @@ class Faculty extends Model
     {
         return $this->hasMany(Flyer::class);
     }
-    
+
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
-    
+
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class);
     }
-    
+
     public function maps(): HasMany
     {
         return $this->hasMany(Map::class);
@@ -44,7 +44,7 @@ class Faculty extends Model
     {
         return $this->hasMany(HistoryKunjungan::class);
     }
-    
+
     public function announcements(): HasMany
     {
         return $this->hasMany(Announcement::class);
@@ -68,6 +68,16 @@ class Faculty extends Model
     public function feedbacks(): HasMany
     {
         return $this->hasMany(Feedback::class);
+    }
+
+    public function permohonanInformasi()
+    {
+        return $this->hasMany(PermohonanInformasi::class);
+    }
+
+    public function keberatanInformasi()
+    {
+        return $this->hasMany(KeberatanInformasi::class);
     }
 
     public function users(): HasMany

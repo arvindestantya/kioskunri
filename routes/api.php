@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PpidSubmissionController;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/faculties/{faculty}/guests', [GuestController::class, 'store']);
 Route::post('/faculties/{faculty}/feedbacks', [FeedbackController::class, 'store']);
 Route::post('/faculties/{faculty}/surveys', [SurveyController::class, 'store']);
+Route::post('/faculties/{faculty}/permohonan-informasi', [PpidSubmissionController::class, 'storePermohonan']);
+Route::post('/faculties/{faculty}/keberatan-informasi', [PpidSubmissionController::class, 'storeKeberatan']);
 Route::get('/guests/search/{no_identitas}', [GuestController::class, 'searchByNoIdentitas']);
 
 // Route::get('/faculties/{faculty}/flyers', function (Faculty $faculty) {

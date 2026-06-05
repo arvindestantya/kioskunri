@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Faculty;
+use App\Http\Controllers\PpidDataController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\EventController;
@@ -58,13 +59,17 @@ Route::middleware(['auth', 'role:Faculty Admin'])->group(function() {
     Route::get('/admin/flyers', [FlyerController::class, 'index'])->name('flyers.index');
     Route::post('/admin/flyers', [FlyerController::class, 'store'])->name('flyers.store');
     Route::delete('/admin/flyers/{flyer}', [FlyerController::class, 'destroy'])->name('flyers.destroy');
-    
+
     Route::resource('admin/contacts', ContactController::class)->names('contacts');
     Route::resource('admin/schedules', ScheduleController::class)->names('schedules');
     Route::resource('admin/maps', MapController::class)->names('maps');
     Route::resource('admin/announcements', AnnouncementController::class)->names('announcements');
     Route::resource('admin/events', EventController::class)->names('events');
     Route::resource('admin/services', ServiceController::class)->names('services');
+    Route::get('/admin/ppid/permohonan', [PpidDataController::class, 'listPermohonan'])->name('ppid.permohonan');
+    Route::get('/admin/ppid/keberatan', [PpidDataController::class, 'listKeberatan'])->name('ppid.keberatan');
+    Route::get('/admin/ppid/permohonan/export', [PpidDataController::class, 'exportPermohonan'])->name('ppid.permohonan.export');
+    Route::get('/admin/ppid/keberatan/export', [PpidDataController::class, 'exportKeberatan'])->name('ppid.keberatan.export');
 });
 
 // Route khusus untuk Super Admin
@@ -89,10 +94,17 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 // ========================================================================
 
 // Route utama yang cerdas (redirect ke fakultas pertama)
+// Route::get('/', function () {
+//     $firstFaculty = Faculty::firstOrFail();
+//     return redirect()->route('kiosk.show', ['faculty' => 'unit-penunjang-akademik-tik']);
+// });
 Route::get('/', function () {
-    $firstFaculty = Faculty::firstOrFail();
-    return redirect()->route('kiosk.show', ['faculty' => $firstFaculty->slug]);
+    return view('launch');
 });
+Route::get('/sandi-launch', function () {
+    return view('sandi-launch');
+});
+
 
 // Route dinamis untuk menampilkan Kiosk berdasarkan slug fakultas
 // Ini harus menjadi salah satu route terakhir karena "rakus"

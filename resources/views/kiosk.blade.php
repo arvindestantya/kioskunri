@@ -8,21 +8,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}" />
+    <link rel="stylesheet" href="{{ secure_asset('css/app4.css') }}" />
     <link rel="stylesheet" href="{{ secure_asset('css/globals.css') }}" />
     <link rel="stylesheet" href="{{ secure_asset('css/styleguide.css') }}" />
-    <link rel="stylesheet" href="{{ secure_asset('css/form.css') }}" />
+    <link rel="stylesheet" href="{{ secure_asset('css/form9.css') }}" />
     <link rel="stylesheet" href="{{ secure_asset('css/success-modal.css') }}" />
 </head>
 
 <body>
     <div class="KIOSK-UNRI">
       <div class="kiosk-layout"
-           x-data="{ 
+           x-data="{
               facultyId: {{ $faculty->id }},
               flyers: {{ $flyers->pluck('path')->toJson() }},
-              activeIndex: 0, 
+              activeIndex: 0,
               flyerKey: 1,
               get imageCount() { return this.flyers.length },
               isLightboxOpen: false,
@@ -34,6 +33,7 @@
               isContactModalOpen: false,
               isScheduleModalOpen: false,
               isMapModalOpen: false,
+              isPPIDOpen: false,
               mapSliderIndex: 0,
               surveyRating: 0,
               hoverRating: 0,
@@ -41,6 +41,10 @@
               isAnnouncementModalOpen: false,
               isEventModalOpen: false,
               jenisPengunjung: null,
+              selectedChoice: null,
+              caraMemperoleh: '',
+              caraMendapatkan: '',
+              alasanKeberatan: '',
 
               startSlider() {
                   if (this.imageCount > 1) {
@@ -56,14 +60,13 @@
           <header class="header">
             <div class="logo-dan-nama">
               <img class="logo-type-warna" src="{{ secure_asset('img/logo-type-warna-tulisan-hitam-1.png') }}" />
-              <img class="vector" src="{{ secure_asset('img/vector-1.svg') }}" />
               <div class="text-wrapper">{{ $faculty->name }}</div>
             </div>
             <div class="frame">
               <img class="image" src="{{ secure_asset('img/image-3.png') }}" /> <img class="dikti" src="{{ secure_asset('img/dikti-saintekberdampak-1.png') }}" />
             </div>
           </header>
-          
+
           <div class="content">
             @switch($faculty->slug)
                 @case('unit-penunjang-akademik-tik')
@@ -71,7 +74,18 @@
                     <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Unit</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Unit</figcaption></figure></a>
-                    <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Unit</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isPPIDOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/logo-ppid.png') }}" alt="Kegiatan Fakultas icon"><figcaption>PPID</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isSurveyOpen = true"><figure class="frame-11"> <img class="img" src="{{ secure_asset('img/icon-survey.png') }}" alt="Survey Kepuasan icon"><figcaption>Survey<br>Kepuasan</figcaption></figure></a>
+                    @break
+                @case('rektorat')
+                    <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isStatsModalOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Statistik Pengunjung icon"><figcaption>Statistik<br>Pengunjung</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Rektorat</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Rektorat</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isPPIDOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/logo-ppid.png') }}" alt="PPID icon"><figcaption>PPID</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isScheduleModalOpen = true"><figure class="frame-8"><img class="img" src="{{ secure_asset('img/image-12.png') }}" alt="Jadwal Penting icon"><figcaption>Jadwal<br>Penting</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isContactModalOpen = true"><figure class="frame-9"><img class="img" src="{{ secure_asset('img/image-14.png') }}" alt="Kontak Informasi icon"><figcaption>Kontak<br>Informasi</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isFeedbackOpen = true"><figure class="frame-10"><img class="img" src="{{ secure_asset('img/image-15.png') }}" alt="Kritik dan Saran icon"><figcaption>Kritik dan<br>Saran</figcaption></figure></a>
@@ -108,7 +122,7 @@
                   <div class="dot" :class="{ 'active': activeIndex === index }"></div>
               </template>
           </div>
-          
+
           <div class="lightbox-overlay" x-show="isLightboxOpen" @keydown.escape.window="isLightboxOpen = false" @click.self="isLightboxOpen = false" x-transition.opacity.duration.300ms x-cloak>
               <button class="lightbox-close-button" @click="isLightboxOpen = false">×</button>
               <div x-show="imageCount > 1">
@@ -123,18 +137,18 @@
           </div>
 
         <div class="form-modal-overlay" x-show="isFormOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
-    
-            <main class="form" x-data="guestForm()" x-show="isFormOpen" 
-                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" 
+
+            <main class="form" x-data="guestForm()" x-show="isFormOpen"
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100"
                 x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
-                
+
                 <header class="headline">
                     <h1 class="frame"><span class="text-wrapper">Selamat Datang di {{ $faculty->name }}</span></h1>
                     <button class="close-button" aria-label="Tutup formulir" @click="isFormOpen = false; resetForm()"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
                 </header>
 
                 <form class="input-field" @submit.prevent="submitForm">
-                    
+
                     <div class="input">
                         <label class="form-label">Jenis Pengunjung</label>
                         <div class="field flex items-center gap-x-6 py-2">
@@ -246,7 +260,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="input">
                         <label for="perihal" class="form-label">Perihal</label>
                         <div class="field-2">
@@ -362,8 +376,8 @@
                           <label class="form-label">Kepuasan Pelayanan</label>
                           <div class="star-rating" @mouseleave="hoverRating = 0">
                               <template x-for="i in 5" :key="i">
-                                  <span class="star" 
-                                        @mouseover="hoverRating = i" 
+                                  <span class="star"
+                                        @mouseover="hoverRating = i"
                                         @click="surveyRating = i"
                                         :class="{ 'filled': i <= surveyRating || i <= hoverRating }">★</span>
                               </template>
@@ -383,6 +397,368 @@
                       </button>
                   </form>
               </main>
+            </div>
+
+            <div class="form-modal-overlay" x-show="isPPIDOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
+                <main class="form" x-show="isPPIDOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
+
+                    <header class="headline">
+                        <h1 class="frame">
+                            <span class="text-wrapper" x-show="selectedChoice === null">Pilih Layanan</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'permohonan'">Formulir Permohonan Informasi</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'keberatan'">Formulir Keberatan Informasi</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'pungli'">Formulir Pengaduan Pungli / Gratifikasi</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'pejabat'">Formulir Pengaduan Penyalahgunaan Wewenang / Pelanggaran Pejabat</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'mitra'">Formulir Pengaduan Penyalahgunaan Wewenang / Pelanggaran Mitra Kerja</span>
+                        </h1>
+                        <button class="close-button" aria-label="Tutup formulir"
+                                @click="isPPIDOpen = false; selectedChoice = null; surveyRating = 0;">
+                            <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                        </button>
+                    </header>
+
+                    <div class="radio-selection-wrapper" x-show="selectedChoice === null" x-transition:enter.opacity.duration.300ms>
+                        <div class="input" style="margin-bottom: 1rem;">
+                            <label class="form-label">Apa yang ingin Anda lakukan?</label>
+                        </div>
+
+                        <div class="radio-option-group">
+
+                            <button type="button"
+                                    class="button-choice"
+                                    @click="selectedChoice = 'permohonan'"
+                                    :class="{ 'selected': selectedChoice === 'permohonan' }"
+                            >
+                                <span>Buat Permohonan Informasi</span>
+                            </button>
+
+                            <br>
+
+                            <button type="button"
+                                    class="button-choice"
+                                    @click="selectedChoice = 'keberatan'"
+                                    :class="{ 'selected': selectedChoice === 'keberatan' }"
+                            >
+                                <span>Ajukan Keberatan Informasi</span>
+                            </button>
+
+                            <br>
+
+                            <button type="button"
+                                    class="button-choice"
+                                    @click="selectedChoice = 'pungli'"
+                                    :class="{ 'selected': selectedChoice === 'pungli' }"
+                            >
+                                <span>Pengaduan Pungli / Gratifikasi</span>
+                            </button>
+
+                            <br>
+
+                            <button type="button"
+                                    class="button-choice"
+                                    @click="selectedChoice = 'pejabat'"
+                                    :class="{ 'selected': selectedChoice === 'pejabat' }"
+                            >
+                                <span>Pengaduan Penyalahgunaan Wewenang / Pelanggaran Pejabat</span>
+                            </button>
+
+                            <br>
+
+                            <button type="button"
+                                    class="button-choice"
+                                    @click="selectedChoice = 'mitra'"
+                                    :class="{ 'selected': selectedChoice === 'mitra' }"
+                            >
+                                <span>Pengaduan Penyalahgunaan Wewenang / Pelanggaran Mitra Kerja</span>
+                            </button>
+
+                            <input type="hidden" name="choice" x-model="selectedChoice">
+                        </div>
+                    </div>
+
+                    <div class="form-wrapper" x-show="selectedChoice === 'permohonan'" x-transition:enter.opacity.duration.300ms>
+
+                        <button type="button" @click="selectedChoice = null; caraMemperoleh = ''; caraMendapatkan = '';" class="back-button" style="margin-bottom: 1rem; background: none; border: none; color: #007bff; cursor: pointer;">
+                            &larr; Ganti Pilihan
+                        </button>
+
+                        {{-- <form class="input-field" @submit.prevent="
+                            const formElement = $el;
+                            const formData = new FormData(formElement);
+                            // [PENTING] Ganti URL endpoint ini sesuai dengan API untuk 'permohonan'
+                            fetch(`/api/faculties/${$data.facultyId}/permohonan-informasi`, {
+                                method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    formElement.reset(); isPPIDOpen = false; selectedChoice = null;
+                                    isSuccessOpen = true; setTimeout(() => { isSuccessOpen = false }, 3000);
+                                } else { /* penanganan error */ }
+                            }).catch(error => { /* penanganan error */ });
+                        ">
+                            <input type="hidden" name="jenis_layanan" value="permohonan">
+
+                            <div class="form-content-wrapper">
+
+                                <div class="input">
+                                    <label for="permohonan-nama" class="form-label">Nama/ Instansi Pemohon Informasi *</label>
+                                    <div class="field">
+                                        <input id="permohonan-nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Jawaban Anda" required autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="input">
+                                    <label for="permohonan-ktp" class="form-label">Lampirkan foto KTP/SIM/ Identitas Lainnya *</label>
+                                    <div class="field-file">
+                                        <input id="permohonan-ktp" name="file_identitas" type="file" accept="image/*,application/pdf" capture="environment" required>
+                                    </div>
+                                </div>
+
+                                <div class="grid-2-col-fields">
+                                    <div class="input">
+                                        <label for="permohonan-alamat-ktp" class="form-label">Alamat (Sesuai KTP/SIM/...) *</label>
+                                        <div class="field-2">
+                                            <textarea id="permohonan-alamat-ktp" name="alamat_ktp" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="input">
+                                        <label for="permohonan-alamat-sekarang" class="form-label">Alamat saat ini (Kosongkan apabila sama)</label>
+                                        <div class="field-2">
+                                            <textarea id="permohonan-alamat-sekarang" name="alamat_sekarang" class="content text-wrapper-2" placeholder="Jawaban Anda" autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid-2-col-fields">
+                                    <div class="input">
+                                        <label for="permohonan-no-hp" class="form-label">No. HP *</label>
+                                        <div class="field">
+                                            <input id="permohonan-no-hp" name="no_hp" class="content text-wrapper-2" type="tel" placeholder="Jawaban Anda" required autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <div class="input">
+                                        <label for="permohonan-email" class="form-label">Email *</label>
+                                        <div class="field">
+                                            <input id="permohonan-email" name="email" class="content text-wrapper-2" type="email" placeholder="Jawaban Anda" required autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid-2-col-fields">
+                                    <div class="input">
+                                        <label for="permohonan-informasi" class="form-label">Informasi yang Dibutuhkan *</label>
+                                        <div class="field-2">
+                                            <textarea id="permohonan-informasi" name="informasi" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="input">
+                                        <label for="permohonan-tujuan" class="form-label">Tujuan Penggunaan Informasi *</label>
+                                        <div class="field-2">
+                                            <textarea id="permohonan-tujuan" name="tujuan" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input">
+                                    <label class="form-label">Cara Memperoleh Informasi *</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" name="cara_memperoleh" value="Membaca" x-model="caraMemperoleh" required> Membaca</label>
+                                        <label><input type="radio" name="cara_memperoleh" value="Mendengarkan" x-model="caraMemperoleh"> Mendengarkan</label>
+                                        <label><input type="radio" name="cara_memperoleh" value="Mencatat" x-model="caraMemperoleh"> Mencatat</label>
+                                        <label><input type="radio" name="cara_memperoleh" value="Mendapatkan salinan hardcopy" x-model="caraMemperoleh"> Mendapatkan salinan informasi hardcopy (fotocopy)</label>
+                                        <label><input type="radio" name="cara_memperoleh" value="Mendapatkan salinan softcopy" x-model="caraMemperoleh"> Mendapatkan salinan informasi softcopy (digital)</label>
+                                        <label>
+                                            <input type="radio" name="cara_memperoleh" value="Yang lain" x-model="caraMemperoleh"> Yang lain:
+                                        </label>
+                                        <div class="field" x-show="caraMemperoleh === 'Yang lain'">
+                                            <input name="cara_memperoleh_lainnya" class="content text-wrapper-2" type="text" placeholder="Sebutkan cara lainnya"
+                                                :required="caraMemperoleh === 'Yang lain'">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input" x-show="caraMemperoleh === 'Mendapatkan salinan hardcopy' || caraMemperoleh === 'Mendapatkan salinan softcopy'" x-transition>
+                                    <label class="form-label">Cara Mendapatkan Salinan Informasi</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" name="cara_mendapatkan" value="Mengambil Langsung" x-model="caraMendapatkan"> Mengambil Langsung</label>
+                                        <label><input type="radio" name="cara_mendapatkan" value="Melalui Kurir" x-model="caraMendapatkan"> Melalui Kurir</label>
+                                        <label><input type="radio" name="cara_mendapatkan" value="Melalui Pos" x-model="caraMendapatkan"> Melalui Pos</label>
+                                        <label><input type="radio" name="cara_mendapatkan" value="Melalui e-mail" x-model="caraMendapatkan"> Melalui e-mail</label>
+                                        <label>
+                                            <input type="radio" name="cara_mendapatkan" value="Yang lain" x-model="caraMendapatkan"> Yang lain:
+                                        </label>
+                                        <div class="field" x-show="caraMendapatkan === 'Yang lain'">
+                                            <input name="cara_mendapatkan_lainnya" class="content text-wrapper-2" type="text" placeholder="Sebutkan cara lainnya"
+                                                :required="caraMendapatkan === 'Yang lain'">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input">
+                                    <label for="permohonan-tanggal" class="form-label">Tanggal *</label>
+                                    <div class="field">
+                                        <input id="permohonan-tanggal" name="tanggal" class="content text-wrapper-2" type="date" required />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <button type="submit" class="button">
+                                <div class="containt"><span class="label">Kirim Permohonan</span></div>
+                            </button>
+                        </form> --}}
+                        <iframe
+                            src="https://e-ppid.unri.ac.id/kiosk/permohonan/1"
+                            title="Formulir Permohonan PPID"
+                            allow="camera; microphone"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+                    </div>
+
+                    <div class="form-wrapper" x-show="selectedChoice === 'keberatan'" x-transition:enter.opacity.duration.300ms>
+
+                        <button type="button" @click="selectedChoice = null" class="back-button" style="margin-bottom: 1rem; background: none; border: none; color: #007bff; cursor: pointer;">
+                            &larr; Ganti Pilihan
+                        </button>
+
+                        <iframe
+                            src="https://e-ppid.unri.ac.id/kiosk/permohonan/2"
+                            title="Formulir Permohonan PPID"
+                            allow="camera; microphone"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+
+
+                        {{-- <form class="input-field" @submit.prevent="
+                            const formElement = $el;
+                            const formData = new FormData(formElement);
+                            // [PENTING] Ganti URL endpoint ini sesuai dengan API untuk 'keberatan'
+                            fetch(`/api/faculties/${$data.facultyId}/keberatan-informasi`, {
+                                method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    formElement.reset(); isPPIDOpen = false; selectedChoice = null;
+                                    isSuccessOpen = true; setTimeout(() => { isSuccessOpen = false }, 3000);
+                                } else { /* penanganan error */ }
+                            }).catch(error => { /* penanganan error */ });
+                        ">
+                            <input type="hidden" name="jenis_layanan" value="keberatan">
+
+                            <div class="input">
+                                <label for="keberatan-nama" class="form-label">Nama/ Instansi Pemohon *</label>
+                                <div class="field">
+                                    <input id="keberatan-nama" name="nama" class="content text-wrapper-2" type="text" placeholder="Jawaban Anda" required autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="permohonan-ktp" class="form-label">Lampirkan foto KTP/SIM/ Identitas Lainnya *</label>
+                                <div class="field-file">
+                                    <input id="permohonan-ktp"
+                                        name="file_identitas"
+                                        type="file"
+                                        accept="image/*"
+                                        capture="environment"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="keberatan-alamat-sekarang" class="form-label">Alamat saat ini *</label>
+                                <div class="field-2">
+                                    <textarea id="keberatan-alamat-sekarang" name="alamat_sekarang" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="keberatan-telepon" class="form-label">No. Telepon/HP *</label>
+                                <div class="field">
+                                    <input id="keberatan-telepon" name="telepon" class="content text-wrapper-2" type="tel" placeholder="Jawaban Anda" required autocomplete="off" />
+                                </div>
+                            </div>
+
+                            <div class="input">
+                                <label for="keberatan-email" class="form-label">Email *</label>
+                                <div class="field">
+                                    <input id="keberatan-email" name="email" class="content text-wrapper-2" type="email" placeholder="Jawaban Anda" required autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="keberatan-informasi" class="form-label">Informasi yang Dimohon *</label>
+                                <div class="field-2">
+                                    <textarea id="keberatan-informasi" name="informasi" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label for="keberatan-tujuan" class="form-label">Tujuan Penggunaan Informasi *</label>
+                                <div class="field-2">
+                                    <textarea id="keberatan-tujuan" name="tujuan" class="content text-wrapper-2" placeholder="Jawaban Anda" required autocomplete="off"></textarea>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <label class="form-label">Alasan Pengajuan Keberatan *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="alasan" value="Tidak disediakannya informasi" x-model="alasanKeberatan" required> Tidak disediakannya informasi</label><br>
+                                    <label><input type="radio" name="alasan" value="Tidak ditanggapinya informasi" x-model="alasanKeberatan"> Tidak ditanggapinya informasi</label><br>
+                                    <label><input type="radio" name="alasan" value="Pengenaan biaya yang tidak wajar" x-model="alasanKeberatan"> Pengenaan biaya yang tidak wajar</label><br>
+                                    <label><input type="radio" name="alasan" value="Penolakan atas permintaan informasi..." x-model="alasanKeberatan"> Penolakan atas permintaan informasi...</label><br>
+                                    <label><input type="radio" name="alasan" value="Penyampaian informasi yang melebihi jangka waktu..." x-model="alasanKeberatan"> Penyampaian informasi yang melebihi jangka waktu...</label><br>
+                                    <label>
+                                        <input type="radio" name="alasan" value="Yang lain" x-model="alasanKeberatan"> Yang lain:
+                                    </label>
+                                    <div class="field" x-show="alasanKeberatan === 'Yang lain'">
+                                        <textarea name="alasan_lainnya" class="content text-wrapper-2" placeholder="Tuliskan alasan lainnya"
+                                                :required="alasanKeberatan === 'Yang lain'"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="button">
+                                <div class="containt"><span class="label">Kirim Keberatan</span></div>
+                            </button>
+                        </form> --}}
+                    </div>
+                    <div class="form-wrapper" x-show="selectedChoice === 'pungli'" x-transition:enter.opacity.duration.300ms>
+
+                        <button type="button" @click="selectedChoice = null" class="back-button" style="margin-bottom: 1rem; background: none; border: none; color: #007bff; cursor: pointer;">
+                            &larr; Ganti Pilihan
+                        </button>
+
+                        <iframe
+                            src="https://e-ppid.unri.ac.id/kiosk/permohonan/3"
+                            title="Formulir Permohonan PPID"
+                            allow="camera; microphone"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+                    </div>
+                    <div class="form-wrapper" x-show="selectedChoice === 'pejabat'" x-transition:enter.opacity.duration.300ms>
+
+                        <button type="button" @click="selectedChoice = null" class="back-button" style="margin-bottom: 1rem; background: none; border: none; color: #007bff; cursor: pointer;">
+                            &larr; Ganti Pilihan
+                        </button>
+
+                        <iframe
+                            src="https://e-ppid.unri.ac.id/kiosk/permohonan/4"
+                            title="Formulir Permohonan PPID"
+                            allow="camera; microphone"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+                    </div>
+                    <div class="form-wrapper" x-show="selectedChoice === 'mitra'" x-transition:enter.opacity.duration.300ms>
+
+                        <button type="button" @click="selectedChoice = null" class="back-button" style="margin-bottom: 1rem; background: none; border: none; color: #007bff; cursor: pointer;">
+                            &larr; Ganti Pilihan
+                        </button>
+
+                        <iframe
+                            src="https://e-ppid.unri.ac.id/kiosk/permohonan/5"
+                            title="Formulir Permohonan PPID"
+                            allow="camera; microphone"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+                    </div>
+
+                </main>
             </div>
 
             <div class="form-modal-overlay z-50"
@@ -420,7 +796,7 @@
                                                 @break
                                             @case('instagram')
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
-                                                @break                                            
+                                                @break
                                             @case('whatsapp')
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.487 5.235 3.487 8.413 0 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.447-4.433-9.886-9.889-9.886-5.448 0-9.886 4.434-9.889 9.885.002 2.024.603 3.965 1.738 5.63l-1.192 4.355 4.462-1.165zM16.47 14.382c-.215-.108-1.267-.627-1.466-.701-.199-.073-.343-.108-.487.108-.144.217-.553.701-.679.846-.126.144-.253.162-.468.054-.217-.108-.901-.334-1.716-.99-1.277-1.023-1.466-1.902-1.466-2.247s-.036-.51.072-.654c.108-.144.234-.36.343-.51.108-.144.144-.253.216-.42.072-.162.036-.306-.018-.414-.054-.108-.487-1.17-.679-1.598-.18-.396-.36-.343-.487-.343-.126 0-.27.009-.414.009-.144 0-.378.054-.577.271-.199.217-.769.752-.769 1.826s.787 2.121.896 2.269c.108.144 1.554 2.366 3.759 3.312.54.234.958.378 1.287.486.487.162.928.144 1.267.081.378-.054 1.267-.519 1.448-.986.18-.468.18-.867.126-.986-.054-.108-.199-.162-.414-.27z"/></svg>
                                                 @break
@@ -461,7 +837,7 @@
                         <ul class="space-y-6">
                             @forelse ($schedules as $schedule)
                                 <li class="flex items-start gap-4 pb-6 border-b border-gray-200 last:border-b-0">
-                                    
+
                                     <div class="flex-shrink-0 w-20 text-center bg-indigo-50 p-3 rounded-lg">
                                         <p class="text-3xl font-bold text-indigo-600">
                                             {{ $schedule->start_date->format('d') }}
@@ -473,7 +849,7 @@
 
                                     <div class="flex-grow">
                                         <h4 class="font-bold text-lg text-gray-800 ">{{ $schedule->title }}</h4>
-                                        
+
                                         @if($schedule->end_date && $schedule->end_date->ne($schedule->start_date))
                                             <p class="text-xs font-medium text-gray-500 mb-2">
                                                 Berlangsung hingga {{ $schedule->end_date->format('d M Y') }}
@@ -505,24 +881,43 @@
                         <h1 class="frame"><span class="text-wrapper">Denah {{ $faculty->name }}</span></h1>
                         <button class="close-button" @click="isMapModalOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
                     </header>
-                    <div class="p-4 bg-gray-100">
+
+                    <div class="relative p-4 bg-gray-100"
+                         x-swipe:left="mapSliderIndex = (mapSliderIndex + 1) % {{ $faculty->maps->count() }}"
+                         x-swipe:right="mapSliderIndex = (mapSliderIndex - 1 + {{ $faculty->maps->count() }}) % {{ $faculty->maps->count() }}">
+
                         @if($faculty->maps->isNotEmpty())
-                            
                             @foreach($faculty->maps as $index => $map)
                                 <div x-show="mapSliderIndex === {{ $index }}" class="duration-300" x-transition.opacity>
+                                    <h1 class="frame"><span class="text-wrapper">{{ $map->title }}</span></h1>
                                     <img src="{{ asset('storage/' . $map->path) }}" alt="Denah {{ $faculty->name }} #{{ $index + 1 }}" class="w-full h-auto rounded-lg shadow-md">
                                 </div>
                             @endforeach
 
                             @if($faculty->maps->count() > 1)
-                                <button @click="mapSliderIndex = (mapSliderIndex - 1 + {{ $faculty->maps->count() }}) % {{ $faculty->maps->count() }}" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80">‹</button>
-                                <button @click="mapSliderIndex = (mapSliderIndex + 1) % {{ $faculty->maps->count() }}" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80">›</button>
+                                <button @click="mapSliderIndex = (mapSliderIndex - 1 + {{ $faculty->maps->count() }}) % {{ $faculty->maps->count() }}"
+                                    class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/50 rounded-full h-10 w-10 flex items-center justify-center hover:bg-white/80 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                    </svg>
+                                </button>
+
+                                {{-- Tombol Next --}}
+                                <button @click="mapSliderIndex = (mapSliderIndex + 1) % {{ $faculty->maps->count() }}"
+                                        class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/50 rounded-full h-10 w-10 flex items-center justify-center hover:bg-white/80 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
+                                </button>
                             @endif
 
                         @else
                             @switch($faculty->slug)
                                 @case('unit-penunjang-akademik-tik')
                                     <p class="text-center text-gray-500 py-20">Denah untuk unit ini belum tersedia.</p>
+                                    @break
+                                @case('rektorat')
+                                    <p class="text-center text-gray-500 py-20">Denah untuk rektorat belum tersedia.</p>
                                     @break
                                 @default
                                     <p class="text-center text-gray-500 py-20">Denah untuk fakultas ini belum tersedia.</p>
@@ -538,10 +933,10 @@
                         <h1 class="frame"><span class="text-wrapper">Statistik Pengunjung</span></h1>
                         <button class="close-button" @click="isStatsModalOpen = false"><img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" /></button>
                     </header>
-                    
+
                     <div class="p-6 sm:p-8 flex justify-center items-center">
                         <div class="flex flex-col sm:flex-row justify-center items-center gap-6 text-center">
-                            
+
                             <div class="w-40 h-40 bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="bg-blue-100 p-3 rounded-full mb-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -579,6 +974,9 @@
                         @switch($faculty->slug)
                                 @case('unit-penunjang-akademik-tik')
                                     <h1 class="frame"><span class="text-wrapper">Pengumuman Unit</span></h1>
+                                    @break
+                                @case('rektorat')
+                                    <h1 class="frame"><span class="text-wrapper">Pengumuman Rektorat</span></h1>
                                     @break
                                 @default
                                     <h1 class="frame"><span class="text-wrapper">Pengumuman Fakultas</span></h1>
@@ -620,6 +1018,9 @@
                             @case('unit-penunjang-akademik-tik')
                                 <h1 class="frame"><span class="text-wrapper">Kegiatan Unit</span></h1>
                                 @break
+                            @case('rektorat')
+                                <h1 class="frame"><span class="text-wrapper">Kegiatan Rektorat</span></h1>
+                                @break
                             @default
                                 <h1 class="frame"><span class="text-wrapper">Kegiatan Fakultas</span></h1>
                         @endswitch
@@ -635,7 +1036,7 @@
                                     @if($event->path)
                                     <img src="{{ asset('storage/' . $event->path) }}" alt="{{ $event->title }}" class="w-full sm:w-48 h-auto rounded-lg object-cover">
                                     @endif
-                                    
+
                                     <div class="flex-grow">
                                         <h4 class="font-bold text-xl text-gray-800">{{ $event->title }}</h4>
                                         <div class="flex items-center gap-4 text-sm text-gray-500 mt-1">
@@ -669,7 +1070,7 @@
                 </main>
             </div>
 
-          
+
           <div class="success-modal-overlay" x-show="isSuccessOpen" x-transition:enter.opacity.duration.300ms x-transition:leave.opacity.duration.300ms x-cloak>
               <div class="success-modal-container" x-show="isSuccessOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90">
                 <img src="{{ secure_asset('img/32.png') }}" alt="Success Icon" class="success-modal-icon">
@@ -747,13 +1148,13 @@
                     fetch(`/api/faculties/${facultyId}/guests`, {
                         method: 'POST',
                         body: dataToSend,
-                        headers: { 
+                        headers: {
                             'Accept': 'application/json',
                         }
                     })
                     .then(response => {
                         if (response.ok) {
-                            this.isSuccessOpen = true; 
+                            this.isSuccessOpen = true;
                             setTimeout(() => location.reload(), 1000);
                         } else {
                             response.json().then(data => {
@@ -767,7 +1168,7 @@
                         alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
                     });
                 },
-                
+
                 resetGuestData(resetNoIdentitas = true) {
                     if (resetNoIdentitas) {
                         this.formData.no_identitas = '';
@@ -778,9 +1179,9 @@
                     this.formData.nama_fakultas = '';
                     this.isGuestDataLocked = false;
                 },
-                
+
                 resetForm() {
-                    this.resetGuestData(); 
+                    this.resetGuestData();
                     this.formData.jenis_pengunjung = '';
                     this.formData.jenis_layanan = '';
                     this.formData.perihal = '';
@@ -788,5 +1189,8 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script src="{{ secure_asset('js/alpine-swipe.min.js') }}"></script>
 </body>
 </html>

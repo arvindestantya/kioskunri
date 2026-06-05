@@ -26,8 +26,7 @@ class FlyerController extends Controller
         return view('admin.flyers.index', compact('flyers', 'faculties'));
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
             'flyer_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -45,14 +44,19 @@ class FlyerController extends Controller
             }
         }
 
-        $path = $request->file('flyer_image')->store('flyers', 'public');
+        if ($request->hasFile('flyer_image') && $request->file('flyer_image')->isValid()) {
 
-        Flyer::create([
-            'path' => $path,
-            'faculty_id' => $facultyId,
-        ]);
+            $path = $request->file('flyer_image')->store('flyers', 'public');
 
-        return redirect()->route('flyers.index')->with('success', 'Flyer berhasil di-upload.');
+            Flyer::create([
+                'path' => $path,
+                'faculty_id' => $facultyId,
+            ]);
+
+            return redirect()->route('flyers.index')->with('success', 'Flyer berhasil di-upload.');
+        }
+
+        return redirect()->back()->with('error', 'Upload flyer gagal. File tidak valid.');
     }
 
     public function destroy(Flyer $flyer)

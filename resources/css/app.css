@@ -53,9 +53,9 @@ img { max-width: 100%; height: auto; display: block; }
 .lightbox-content { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
 .lightbox-image-wrapper img { width: auto; height: auto; max-width: 90vw; max-height: 90vh; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 .lightbox-close-button { position: absolute; top: 20px; right: 30px; background: none; border: none; color: white; font-size: 40px; line-height: 1; cursor: pointer; z-index: 60; }
-.lightbox-nav-button { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.3); border: none; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 60; padding: 15px 10px; border-radius: 5px; transition: background-color 0.2s ease; }
+.lightbox-nav-button { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.3); border: none; color: white; font-size: 48px; font-weight: bold; cursor: pointer; z-index: 60; padding: 15px 10px; border-radius: 5px; transition: background-color 0.2s ease; }
 .lightbox-nav-button:hover { background-color: rgba(0, 0, 0, 0.6); }
-.lightbox-nav-button.prev { left: 20px; }
-.lightbox-nav-button.next { right: 20px; }
+.lightbox-nav-button.prev { left: 48px; }
+.lightbox-nav-button.next { right: 48px; }
 @media (max-width: 1200px) { .kiosk-layout { grid-template-columns: 1fr; height: auto; min-height: 100vh; padding: 15px; gap: 40px; } }
 @media (max-width: 768px) { .KIOSK-UNRI .header { flex-direction: column; align-items: center; gap: 25px; } .KIOSK-UNRI .content { grid-template-columns: 1fr; } .KIOSK-UNRI .logo-dan-nama { flex-direction: column; text-align: center; } .KIOSK-UNRI .vector { display: none; } .KIOSK-UNRI .footer .overlap-group { padding: 0 15px; } .KIOSK-UNRI .footer .text-wrapper-4 { font-size: 12px; } }
