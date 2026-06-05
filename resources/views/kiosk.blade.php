@@ -1146,12 +1146,14 @@
                     }
                 },
 
-                async cetakAntrian() {
+                async cetakAntrian(jenisPengunjung) {
+                    const codeMap = { mahasiswa: 'A', dosen: 'B', tendik: 'B', umum: 'C' };
+                    const code = codeMap[jenisPengunjung] ?? 'A';
                     try {
-                        const res = await fetch('http://localhost/pages/nomor/action.php', {
+                        const res = await fetch('http://localhost/fisip/pages/nomor/action.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: 'type=create_antrian&code_antrian=A',
+                            body: `type=create_antrian&code_antrian=${code}`,
                             signal: AbortSignal.timeout(5000),
                         });
                         const data = await res.json();
@@ -1193,7 +1195,7 @@
 
                     let nomorAntrian = null;
                     if (facultySlug === 'fakultas-ilmu-sosial-dan-ilmu-politik') {
-                        nomorAntrian = await this.cetakAntrian();
+                        nomorAntrian = await this.cetakAntrian(this.formData.jenis_pengunjung);
                     }
 
                     this.$dispatch('antrian-sukses', { nomorAntrian });
