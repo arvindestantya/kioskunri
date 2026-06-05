@@ -46,6 +46,8 @@
               caraMendapatkan: '',
               alasanKeberatan: '',
 
+              nomorAntrian: null,
+
               startSlider() {
                   if (this.imageCount > 1) {
                       this.sliderInterval = setInterval(() => {
@@ -54,7 +56,8 @@
                   }
               }
           }"
-          x-init="startSlider()">
+          x-init="startSlider()"
+          @antrian-sukses.window="isFormOpen = false; nomorAntrian = $event.detail.nomorAntrian; isSuccessOpen = true">
 
         <div class="menu">
           <header class="header">
@@ -1076,6 +1079,12 @@
                 <img src="{{ secure_asset('img/32.png') }}" alt="Success Icon" class="success-modal-icon">
                 <div class="success-modal-headline-wrapper">
                   <h2 class="success-modal-headline-text">Data kamu berhasil disimpan</h2>
+                  <template x-if="nomorAntrian">
+                    <div style="margin-top:1rem; text-align:center;">
+                      <p style="font-size:1rem; color:#6b7280;">Nomor Antrian Anda</p>
+                      <p x-text="nomorAntrian" style="font-size:3rem; font-weight:800; color:#4f46e5; letter-spacing:0.05em;"></p>
+                    </div>
+                  </template>
                 </div>
               </div>
           </div>
@@ -1137,36 +1146,58 @@
                     }
                 },
 
-                submitForm() {
+                async cetakAntrian() {
+                    try {
+                        const res = await fetch('http://localhost/fisip/pages/nomor/action.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: 'type=create_antrian&code_antrian=A',
+                            signal: AbortSignal.timeout(5000),
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            return data.data.code_antrian + data.data.no_antrian;
+                        }
+                    } catch (_) {}
+                    return null;
+                },
+
+                async submitForm() {
                     const facultyId = '{{ $faculty->id }}';
+                    const facultySlug = '{{ $faculty->slug }}';
 
                     const dataToSend = new FormData();
                     for (const key in this.formData) {
                         dataToSend.append(key, this.formData[key]);
                     }
 
-                    fetch(`/api/faculties/${facultyId}/guests`, {
-                        method: 'POST',
-                        body: dataToSend,
-                        headers: {
-                            'Accept': 'application/json',
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            this.isSuccessOpen = true;
-                            setTimeout(() => location.reload(), 1000);
-                        } else {
-                            response.json().then(data => {
-                                let errorMessages = 'Gagal menyimpan data:\n';
-                                for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
-                                alert(errorMessages);
-                            });
-                        }
-                    })
-                    .catch(error => {
+                    let response;
+                    try {
+                        response = await fetch(`/api/faculties/${facultyId}/guests`, {
+                            method: 'POST',
+                            body: dataToSend,
+                            headers: { 'Accept': 'application/json' },
+                        });
+                    } catch (error) {
                         alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
-                    });
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        let errorMessages = 'Gagal menyimpan data:\n';
+                        for (const key in data.errors) { errorMessages += `- ${data.errors[key][0]}\n`; }
+                        alert(errorMessages);
+                        return;
+                    }
+
+                    let nomorAntrian = null;
+                    if (facultySlug === 'fakultas-ilmu-sosial-dan-ilmu-politik') {
+                        nomorAntrian = await this.cetakAntrian();
+                    }
+
+                    this.$dispatch('antrian-sukses', { nomorAntrian });
+                    setTimeout(() => location.reload(), nomorAntrian ? 6000 : 3000);
                 },
 
                 resetGuestData(resetNoIdentitas = true) {

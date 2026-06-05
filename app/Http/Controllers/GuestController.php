@@ -55,7 +55,7 @@ class GuestController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Data tamu berhasil disimpan!', 'data' => $guest], 201);
+        return response()->json(['message' => 'Data tamu berhasil disimpan!', 'data' => $guest, 'no_antrian' => null], 201);
     }
 
     public function searchByNoIdentitas($no_identitas)

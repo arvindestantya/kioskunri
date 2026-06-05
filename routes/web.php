@@ -94,16 +94,16 @@ Route::middleware(['auth', 'role:Super Admin'])->prefix('superadmin')->name('sup
 // ========================================================================
 
 // Route utama yang cerdas (redirect ke fakultas pertama)
-// Route::get('/', function () {
-//     $firstFaculty = Faculty::firstOrFail();
-//     return redirect()->route('kiosk.show', ['faculty' => 'unit-penunjang-akademik-tik']);
-// });
 Route::get('/', function () {
-    return view('launch');
+    $firstFaculty = Faculty::firstOrFail();
+    return redirect()->route('kiosk.show', ['faculty' => 'unit-penunjang-akademik-tik']);
 });
-Route::get('/sandi-launch', function () {
-    return view('sandi-launch');
-});
+// Route::get('/', function () {
+//     return view('launch');
+// });
+// Route::get('/sandi-launch', function () {
+//     return view('sandi-launch');
+// });
 
 
 // Route dinamis untuk menampilkan Kiosk berdasarkan slug fakultas
