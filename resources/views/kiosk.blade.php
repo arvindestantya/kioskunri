@@ -1148,7 +1148,7 @@
 
                 async cetakAntrian() {
                     try {
-                        const res = await fetch('http://localhost/fisip/pages/nomor/action.php', {
+                        const res = await fetch('http://localhost/pages/nomor/action.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                             body: 'type=create_antrian&code_antrian=A',
