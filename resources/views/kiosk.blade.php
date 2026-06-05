@@ -40,6 +40,7 @@
               isStatsModalOpen: false,
               isAnnouncementModalOpen: false,
               isEventModalOpen: false,
+              isMalPelayananOpen: false,
               jenisPengunjung: null,
               selectedChoice: null,
               caraMemperoleh: '',
@@ -54,7 +55,7 @@
                   }
               }
           }"
-          x-init="startSlider()"
+          x-init="startSlider()">
 
         <div class="menu">
           <header class="header">
@@ -93,7 +94,7 @@
                     @break
                 @case('fakultas-ilmu-sosial-dan-ilmu-politik')
                     <a href="#" class="card-link" @click.prevent="isFormOpen = true"><figure class="frame-3"><img class="img" src="{{ secure_asset('img/image-4.png') }}" alt="Buku Tamu icon"><figcaption>Buku<br>Tamu</figcaption></figure></a>
-                    <a href="http://localhost/fisip/index.php?pages=nomor" target="_blank" class="card-link"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Ambil Antrian icon"><figcaption>Ambil<br>Antrian</figcaption></figure></a>
+                    <a href="#" class="card-link" @click.prevent="isMalPelayananOpen = true"><figure class="frame-4"><img class="img" src="{{ secure_asset('img/image-6.png') }}" alt="Ambil Antrian icon"><figcaption>Mal Pelayanan<br>Publik</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isMapModalOpen = true"><figure class="frame-5"><img class="img" src="{{ secure_asset('img/image-7.png') }}" alt="Denah Lokasi icon"><figcaption>Denah<br>Fakultas</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isAnnouncementModalOpen = true"><figure class="frame-6"><img class="image-2" src="{{ secure_asset('img/image.png') }}" alt="Pengumuman Fakultas icon"><figcaption>Pengumuman<br>Fakultas</figcaption></figure></a>
                     <a href="#" class="card-link" @click.prevent="isEventModalOpen = true"><figure class="frame-7"><img class="img" src="{{ secure_asset('img/image-13.png') }}" alt="Kegiatan Fakultas icon"><figcaption>Kegiatan<br>Fakultas</figcaption></figure></a>
@@ -769,6 +770,25 @@
                         ></iframe>
                     </div>
 
+                </main>
+            </div>
+
+            <div class="form-modal-overlay z-50" x-show="isMalPelayananOpen" x-transition x-cloak>
+                <main class="form !max-w-5xl" x-show="isMalPelayananOpen" x-transition>
+                    <header class="headline">
+                        <h1 class="frame"><span class="text-wrapper">Mal Pelayanan Publik</span></h1>
+                        <button class="close-button" aria-label="Tutup" @click="isMalPelayananOpen = false">
+                            <img class="img" src="{{ secure_asset('img/iconx.png') }}" alt="Tombol tutup" />
+                        </button>
+                    </header>
+                    <div class="form-wrapper">
+                        <iframe
+                            src="http://localhost/index.php?pages=nomor"
+                            title="Mal Pelayanan Publik"
+                            frameborder="0"
+                            class="iframe-full-modal"
+                        ></iframe>
+                    </div>
                 </main>
             </div>
 
