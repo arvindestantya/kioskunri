@@ -775,8 +775,8 @@
 
             <div class="form-modal-overlay z-50" x-show="isMalPelayananOpen" x-transition x-cloak>
                 <div x-show="isMalPelayananOpen" x-transition
-                     style="position:fixed; inset:1rem; background:#fff; border-radius:1rem; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.4);">
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid #e5e7eb; flex-shrink:0;">
+                     style="position:fixed; inset:1rem; background:#fff; border-radius:1rem; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.4);">
+                    <div id="mal-modal-header" style="display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid #e5e7eb; height:3.5rem; box-sizing:border-box;">
                         <span style="font-size:1.125rem; font-weight:700;">Mal Pelayanan Publik</span>
                         <button @click="isMalPelayananOpen = false" style="background:none; border:none; cursor:pointer; padding:0.25rem;">
                             <img src="{{ secure_asset('img/iconx.png') }}" alt="Tutup" style="width:1.5rem; height:1.5rem;">
@@ -786,7 +786,7 @@
                         src="http://localhost/index.php?pages=nomor"
                         title="Mal Pelayanan Publik"
                         frameborder="0"
-                        style="flex:1; width:100%; border:none;"
+                        style="position:absolute; top:3.5rem; left:0; right:0; bottom:0; width:100%; height:calc(100% - 3.5rem); border:none;"
                     ></iframe>
                 </div>
             </div>
