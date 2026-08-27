@@ -419,9 +419,9 @@
                             <span class="text-wrapper" x-show="selectedChoice === null">Pilih Layanan</span>
                             <span class="text-wrapper" x-show="selectedChoice === 'permohonan'">Formulir Permohonan Informasi</span>
                             <span class="text-wrapper" x-show="selectedChoice === 'keberatan'">Formulir Keberatan Informasi</span>
-                            <span class="text-wrapper" x-show="selectedChoice === 'pungli'">Formulir Pengaduan Pungli / Gratifikasi</span>
+                            <!-- <span class="text-wrapper" x-show="selectedChoice === 'pungli'">Formulir Pengaduan Pungli / Gratifikasi</span>
                             <span class="text-wrapper" x-show="selectedChoice === 'pejabat'">Formulir Pengaduan Penyalahgunaan Wewenang / Pelanggaran Pejabat</span>
-                            <span class="text-wrapper" x-show="selectedChoice === 'mitra'">Formulir Pengaduan Penyalahgunaan Wewenang / Pelanggaran Mitra Kerja</span>
+                            <span class="text-wrapper" x-show="selectedChoice === 'mitra'">Formulir Pengaduan Penyalahgunaan Wewenang / Pelanggaran Mitra Kerja</span> -->
                         </h1>
                         <button class="close-button" aria-label="Tutup formulir"
                                 @click="isPPIDOpen = false; selectedChoice = null; surveyRating = 0;">
@@ -456,7 +456,7 @@
 
                             <br>
 
-                            <button type="button"
+                            <!-- <button type="button"
                                     class="button-choice"
                                     @click="selectedChoice = 'pungli'"
                                     :class="{ 'selected': selectedChoice === 'pungli' }"
@@ -482,7 +482,7 @@
                                     :class="{ 'selected': selectedChoice === 'mitra' }"
                             >
                                 <span>Pengaduan Penyalahgunaan Wewenang / Pelanggaran Mitra Kerja</span>
-                            </button>
+                            </button> -->
 
                             <input type="hidden" name="choice" x-model="selectedChoice">
                         </div>
