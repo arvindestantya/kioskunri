@@ -957,6 +957,9 @@
                                 @case('unit-penunjang-akademik-tik')
                                     <p class="text-center text-gray-500 py-20">Denah untuk unit ini belum tersedia.</p>
                                     @break
+                                @case('badan-pengelola-usaha')
+                                    <p class="text-center text-gray-500 py-20">Denah untuk badan ini belum tersedia.</p>
+                                    @break
                                 @case('rektorat')
                                     <p class="text-center text-gray-500 py-20">Denah untuk rektorat belum tersedia.</p>
                                     @break
@@ -1016,6 +1019,9 @@
                                 @case('unit-penunjang-akademik-tik')
                                     <h1 class="frame"><span class="text-wrapper">Pengumuman Unit</span></h1>
                                     @break
+                                @case('badan-pengelola-usaha')
+                                    <h1 class="frame"><span class="text-wrapper">Pengumuman BPU</span></h1>
+                                    @break
                                 @case('rektorat')
                                     <h1 class="frame"><span class="text-wrapper">Pengumuman Rektorat</span></h1>
                                     @break
@@ -1058,6 +1064,9 @@
                         @switch($faculty->slug)
                             @case('unit-penunjang-akademik-tik')
                                 <h1 class="frame"><span class="text-wrapper">Kegiatan Unit</span></h1>
+                                @break
+                            @case('badan-pengelola-usaha')
+                                <h1 class="frame"><span class="text-wrapper">Kegiatan BPU</span></h1>
                                 @break
                             @case('rektorat')
                                 <h1 class="frame"><span class="text-wrapper">Kegiatan Rektorat</span></h1>
